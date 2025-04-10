@@ -30,4 +30,12 @@ public class EventService {
             }
         }
     }
+
+    public void deleteEvent(int id){
+        for (Event event : events){
+            if (event.id == id){
+                events.remove(event);
+            }
+        }
+    }
 }

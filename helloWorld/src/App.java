@@ -1,5 +1,8 @@
+//Klasse, welche öffentlich ist
 public class App {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+    //main methode, welche öffentlich ist, static und nichts zurückgibt
+    public static void main(String[] args){
+        //I/O Befehl, welcher eine Konsolenausgabe macht
+        System.out.println("Hello World");
     }
 }

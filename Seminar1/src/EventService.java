@@ -9,4 +9,25 @@ public class EventService {
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
         events.add(currentEvent);
     }
+    
+    public void readEvent(int id){
+        for (Event event : events){
+            if (event.id == id){
+                System.out.println(event);
+                return;
+            }
+        }
+    }
+
+    public void updateEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets){
+        for (Event event: events) {
+            if (event.id == id){
+                event.bezeichnung = bezeichnung;
+                event.ort = ort;
+                event.datum = datum;
+                event.tickets = tickets;
+                return;
+            }
+        }
+    }
 }

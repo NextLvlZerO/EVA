@@ -2,10 +2,10 @@ public class Event {
 
     String bezeichnung;
     String ort;
-    String datum;
-    String[] tickets;
+    LocalDateTime datum;
+    int tickets;
 
-    public Event(String bezeichnung, String ort, String datum, String[] tickets){
+    public Event(String bezeichnung, String ort, LocalDateTime datum, int tickets){
         this.bezeichnung = bezeichnung;
         this.ort = ort;
         this.datum = datum;

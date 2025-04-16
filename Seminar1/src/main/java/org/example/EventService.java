@@ -1,3 +1,4 @@
+package org.example;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ public class EventService {
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
         events.add(currentEvent);
     }
-    
+
     public void readEvent(int id){
         for (Event event : events){
             if (event.id == id){
@@ -32,10 +33,15 @@ public class EventService {
     }
 
     public void deleteEvent(int id){
+        Event tempEvent = null;
         for (Event event : events){
             if (event.id == id){
-                events.remove(event);
+                tempEvent = event;
             }
+        }
+        if (tempEvent != null){
+            events.remove(tempEvent);
         }
     }
 }
+

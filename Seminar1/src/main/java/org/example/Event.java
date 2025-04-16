@@ -1,3 +1,4 @@
+package org.example;
 import java.time.LocalDateTime;
 
 public class Event {
@@ -15,7 +16,14 @@ public class Event {
         this.datum = datum;
         this.tickets = tickets;
     }
-    public static void main(String[] args){
 
+
+    public String toString() {
+        return ("Event mit: id:" + id
+                + ", bezeichnung:" + bezeichnung
+                + ", ort:" + ort
+                + ", datum: " + datum
+                + ", tickets: " + tickets);
     }
 }
+

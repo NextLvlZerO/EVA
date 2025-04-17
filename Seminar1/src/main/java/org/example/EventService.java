@@ -5,9 +5,13 @@ import java.util.List;
 
 public class EventService {
     List<Event> events = new ArrayList<>();
+    IDService idservice = new IDService();
 
-    public void createEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException{
+    public void createEvent(String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException{
         if (tickets < 0 && LocalDateTime.now().isAfter(datum) ) throw new NegativeNumberException("ticket must be positive");
+
+        int id = idservice.addId();
+
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
         events.add(currentEvent);
     }
@@ -42,6 +46,8 @@ public class EventService {
             }
         }
         if (tempEvent != null){
+            int current_id = tempEvent.id;
+            idservice.removeId(current_id);
             events.remove(tempEvent);
         }
     }

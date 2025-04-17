@@ -33,9 +33,33 @@ public EventClient() {
 
     public void deleteEvent() {}
 
-    public void readEvent() {}
+    public void readEvent() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Reading a event");
+        System.out.println("Please enter the id of the event you would like to read");
+        String input = sc.nextLine();
+        eventService.readEvent(Integer.parseInt(input));
+    }
 
-    public void updateEvent() {}
+    public void updateEvent() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Updating a event");
+        System.out.println("Please enter the data of the event you would like to update");
+        System.out.println("Pattern:id, name, location, date, tickets");
+
+        String input = sc.nextLine();
+        String[] inputArray = input.split(", ");
+        try {
+            eventService.updateEvent(Integer.parseInt(inputArray[0]), inputArray[1], inputArray[2], LocalDateTime.parse(inputArray[3]), Integer.parseInt(inputArray[4]));
+        }
+        catch (NegativeNumberException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (InvalidDateException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 
     public void readAllEvents() {}
 

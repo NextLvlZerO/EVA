@@ -7,7 +7,7 @@ public class EventService {
     List<Event> events = new ArrayList<>();
 
     public void createEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException{
-        if (tickets < 0 || LocalDateTime.now().isAfter(datum) ) throw new NegativeNumberException("ticket must be positive");
+        if (tickets < 0 && LocalDateTime.now().isAfter(datum) ) throw new NegativeNumberException("ticket must be positive");
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
         events.add(currentEvent);
     }

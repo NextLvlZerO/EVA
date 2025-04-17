@@ -8,5 +8,8 @@ public class Main {
         System.out.println(valorantEvent);
         PrimeNumberGenerator primeNumberGenerator = new PrimeNumberGenerator();
         System.out.println(primeNumberGenerator.getPrimeNumber(10,20));
+
+
+        System.out.println(primeNumberGenerator.getPrimeNumbers(100,1000000000,2000000000));
     }
 }

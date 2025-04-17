@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrimeNumberGenerator {
-    public int getPrimeNumber(int l, int r) {
+    public static int getPrimeNumber(int l, int r) {
         while (l < r) {
             if (isPrim(l)) return l;
             l++;
@@ -13,7 +13,7 @@ public class PrimeNumberGenerator {
     }
 
 
-    public boolean isPrim(int n) {
+    public static boolean isPrim(int n) {
         if (n <= 1) return false;
         for (int i = 2; i < Math.sqrt(n); i++) {
             if (n%i == 0) return false;

@@ -51,5 +51,18 @@ public class EventService {
             events.remove(tempEvent);
         }
     }
+
+    public void getAllEvents() {
+       for (Event event : events) {
+           System.out.println(event);
+       }
+    }
+
+
+    public void deleteAllEvents() {
+        while (!events.isEmpty()){
+            events.remove(0);
+        }
+    }
 }
 

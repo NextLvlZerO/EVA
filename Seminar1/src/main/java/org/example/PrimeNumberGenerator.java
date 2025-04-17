@@ -5,9 +5,10 @@ import java.util.List;
 
 public class PrimeNumberGenerator {
     public static int getPrimeNumber(int l, int r) {
-        while (l < r) {
-            if (isPrim(l)) return l;
-            l++;
+
+        for (int i = 0; i < 20000; i++) {
+            int randomNumber = (int) (Math.random() * (r - l + 1)) + l;
+            if (isPrim(randomNumber)) return randomNumber;
         }
         return -1;
     }

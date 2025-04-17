@@ -11,6 +11,7 @@ public class IDService {
 
     public int addId() {
         int newId = PrimeNumberGenerator.getPrimeNumber(1000000000,2000000000);
+        while (ids.contains(newId)) newId = PrimeNumberGenerator.getPrimeNumber(1000000000, 2000000000);
         ids.add(newId);
         return newId;
     }

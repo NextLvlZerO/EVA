@@ -6,7 +6,8 @@ import java.util.List;
 public class EventService {
     List<Event> events = new ArrayList<>();
 
-    public void createEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets){
+    public void createEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException{
+        if (tickets < 0 ) throw new NegativeNumberException("ticket must be positive");
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
         events.add(currentEvent);
     }
@@ -20,7 +21,8 @@ public class EventService {
         }
     }
 
-    public void updateEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets){
+    public void updateEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException{
+        if (tickets < 0 ) throw new NegativeNumberException("ticket must be positive");
         for (Event event: events) {
             if (event.id == id){
                 event.bezeichnung = bezeichnung;

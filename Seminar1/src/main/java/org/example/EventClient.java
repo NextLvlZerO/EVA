@@ -1,16 +1,14 @@
 package org.example;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Scanner;
 
 public class EventClient {
-
     EventService eventService;
 
-public EventClient() {
-    eventService = new EventService();
-}
+    public EventClient() {
+        eventService = new EventService();
+    }
 
     public void createEvent() {
         Scanner sc = new Scanner(System.in);
@@ -26,17 +24,15 @@ public EventClient() {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         sc.close();
     }
 
     public void deleteEvent() {
-    Scanner sc = new Scanner(System.in);
-    System.out.println("Deleting a event");
-    System.out.println("Please enter the id of the event you would like to delete");
-    String input = sc.nextLine();
-    eventService.deleteEvent(Integer.parseInt(input));
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Deleting a event");
+        System.out.println("Please enter the id of the event you would like to delete");
+        String input = sc.nextLine();
+        eventService.deleteEvent(Integer.parseInt(input));
     }
 
     public void readEvent() {
@@ -58,26 +54,18 @@ public EventClient() {
         try {
             eventService.updateEvent(Integer.parseInt(inputArray[0]), inputArray[1], inputArray[2], LocalDateTime.parse(inputArray[3]), Integer.parseInt(inputArray[4]));
         }
-        catch (NegativeNumberException e) {
+        catch (NegativeNumberException | InvalidDateException e) {
             System.out.println(e.getMessage());
         }
-        catch (InvalidDateException e) {
-            System.out.println(e.getMessage());
-        }
-
     }
 
     public void readAllEvents() {
     System.out.println("Reading all the events");
-    eventService.getAllEvents();
+    eventService.printAllEvents();
     }
 
     public void deleteAllEvents() {
     System.out.println("Deleting all the events");
     eventService.deleteAllEvents();
     }
-
-
-
-
 }

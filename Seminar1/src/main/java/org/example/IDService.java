@@ -1,22 +1,27 @@
 package org.example;
-import org.example.PrimeNumberGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class IDService {
-    //List<Integer> ids = new ArrayList<>();
-    Set<Integer> ids = new HashSet<>();
+    Set<Integer> ids;
 
+    public IDService() {
+        ids = new HashSet<>();
+    }
 
     public int addId() {
         int newId = PrimeNumberGenerator.getPrimeNumber(1000000000,2000000000);
-        while (ids.contains(newId)) newId = PrimeNumberGenerator.getPrimeNumber(1000000000, 2000000000);
+        int limit = 20000;
+        while ((ids.contains(newId) || newId == -1) && limit > 0) {
+            newId = PrimeNumberGenerator.getPrimeNumber(1000000000, 2000000000);
+            limit--;
+        }
         ids.add(newId);
         return newId;
     }
 
     public void removeId(int id) {
-        if (ids.contains(id)) ids.remove(id);
+        ids.remove(id);
     }
 }

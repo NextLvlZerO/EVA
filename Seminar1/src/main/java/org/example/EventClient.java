@@ -36,7 +36,7 @@ public class EventClient {
                     break;
                 case "5":readAllEvents();
                     break;
-                case "6":System.out.println("");
+                case "6":deleteAllEvents();
                     break;
                 case "7": break outer;
             }

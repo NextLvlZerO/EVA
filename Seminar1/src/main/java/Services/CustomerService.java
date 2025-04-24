@@ -1,4 +1,6 @@
-package org.example;
+package Services;
+
+import Main.Customer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

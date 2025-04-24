@@ -1,4 +1,6 @@
-package org.example;
+package Services;
+
+import Main.PrimeNumberGenerator;
 
 import java.util.HashSet;
 import java.util.Set;

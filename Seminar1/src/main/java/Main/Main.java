@@ -1,4 +1,6 @@
-package org.example;
+package Main;
+
+import Client.Client;
 
 public class Main {
 

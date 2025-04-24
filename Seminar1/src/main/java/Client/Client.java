@@ -1,7 +1,5 @@
-package org.example;
+package Client;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Client {

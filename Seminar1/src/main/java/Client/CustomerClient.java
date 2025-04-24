@@ -1,4 +1,6 @@
-package org.example;
+package Client;
+
+import Services.CustomerService;
 
 import java.time.LocalDate;
 import java.util.Scanner;

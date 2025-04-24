@@ -1,4 +1,8 @@
-package org.example;
+package Client;
+
+import Services.EventService;
+import Main.InvalidDateException;
+import Main.NegativeNumberException;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;

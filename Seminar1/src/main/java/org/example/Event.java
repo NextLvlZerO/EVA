@@ -59,11 +59,11 @@ public class Event {
 
     @Override
     public String toString() {
-        return ("Event mit: id:" + id
-                + ", bezeichnung:" + bezeichnung
-                + ", ort:" + ort
-                + ", datum: " + datum
-                + ", tickets: " + tickets);
+        return ("------------\nEvent mit:\nid:" + id
+                + "\nbezeichnung:" + bezeichnung
+                + "\nort:" + ort
+                + "\ndatum: " + datum
+                + "\ntickets: " + tickets);
     }
 }
 

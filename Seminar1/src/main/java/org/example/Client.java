@@ -15,6 +15,7 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         outer: while(true){
 
+            System.out.println("-----------------");
             System.out.println("Management System");
             System.out.println("-----------------");
             System.out.println("1 - Event service");
@@ -39,31 +40,35 @@ public class Client {
     }
 
     public void eventManagement(Scanner scanner){
-        System.out.println("What would you like to do?");
-        System.out.println("1 - Create a new event");
-        System.out.println("2 - Get an event");
-        System.out.println("3 - Update an event");
-        System.out.println("4 - Delete a event");
-        System.out.println("5 - Get all events");
-        System.out.println("6 - Delete all events");
-        System.out.println("7 - Exit");
+        while (true) {
+            System.out.println("-----------------");
+            System.out.println("What would you like to do?");
+            System.out.println("-----------------");
+            System.out.println("1 - Create a new event");
+            System.out.println("2 - Get an event");
+            System.out.println("3 - Update an event");
+            System.out.println("4 - Delete a event");
+            System.out.println("5 - Get all events");
+            System.out.println("6 - Delete all events");
+            System.out.println("7 - Close");
 
-        String command = scanner.nextLine();
+            String command = scanner.nextLine();
 
-        switch(command){
-            case "1":createEvent(scanner);
-                break;
-            case "2":readEvent();
-                break;
-            case "3":updateEvent();
-                break;
-            case "4":deleteEvent(scanner);
-                break;
-            case "5":readAllEvents();
-                break;
-            case "6":deleteAllEvents();
-                break;
-            case "7": System.exit(0);
+            switch(command){
+                case "1":createEvent(scanner);
+                    break;
+                case "2":readEvent();
+                    break;
+                case "3":updateEvent();
+                    break;
+                case "4":deleteEvent(scanner);
+                    break;
+                case "5":readAllEvents();
+                    break;
+                case "6":deleteAllEvents();
+                    break;
+                case "7": return;
+            }
         }
     }
 

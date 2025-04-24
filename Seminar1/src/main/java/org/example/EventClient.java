@@ -12,8 +12,7 @@ public EventClient() {
     eventService = new EventService();
 }
 
-    public void createEvent() {
-        Scanner sc = new Scanner(System.in);
+    public void createEvent(Scanner sc) {
 
         System.out.println("Creating a new event");
         System.out.println("Please enter the data of the event you would like to create");
@@ -27,12 +26,9 @@ public EventClient() {
             e.printStackTrace();
         }
 
-
-        sc.close();
     }
 
-    public void deleteEvent() {
-    Scanner sc = new Scanner(System.in);
+    public void deleteEvent(Scanner sc) {
     System.out.println("Deleting a event");
     System.out.println("Please enter the id of the event you would like to delete");
     String input = sc.nextLine();

@@ -1,5 +1,6 @@
 package org.example;
 import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class Main {
 
@@ -17,11 +18,41 @@ public class Main {
         }
 
 
-        System.out.println(valorantEvent);
-        PrimeNumberGenerator primeNumberGenerator = new PrimeNumberGenerator();
-        System.out.println(primeNumberGenerator.getPrimeNumber(10,20));
+        EventClient eventClient = new EventClient();
+        Scanner scanner = new Scanner(System.in);
+
+        outer: while(true){
 
 
-        System.out.println(primeNumberGenerator.getPrimeNumbers(100,1000000000,2000000000));
+            System.out.println("What would you like to do?");
+            System.out.println("1 - Create a new event");
+            System.out.println("2 - Get an event");
+            System.out.println("3 - Update an event");
+            System.out.println("4 - Delete a event");
+            System.out.println("5 - Get all events");
+            System.out.println("6 - Delete all events");
+            System.out.println("7 - Exit");
+
+            String command = scanner.nextLine();
+
+            switch(command){
+                case "1":eventClient.createEvent(scanner);
+                break;
+                case "2":eventClient.readEvent();
+                break;
+                case "3":eventClient.updateEvent();
+                break;
+                case "4":eventClient.deleteEvent(scanner);
+                break;
+                case "5":eventClient.readAllEvents();
+                break;
+                case "6":eventClient.deleteAllEvents();
+                break;
+                case "7": break outer;
+            }
+
+        }
+
+
     }
 }

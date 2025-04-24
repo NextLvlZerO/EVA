@@ -41,7 +41,7 @@ public class Client {
         }
     }
 
-    public void eventManagement(Scanner scanner){
+    public void eventManagement(Scanner scanner) {
         while (true) {
             System.out.println("-----------------");
             System.out.println("What would you like to do?");
@@ -56,20 +56,28 @@ public class Client {
 
             String command = scanner.nextLine();
 
-        switch(command){
-            case "1":createEvent(scanner);
-                break;
-            case "2":readEvent();
-                break;
-            case "3":updateEvent(scanner);
-                break;
-            case "4":deleteEvent(scanner);
-                break;
-            case "5":readAllEvents();
-                break;
-            case "6":deleteAllEvents();
-                break;
-            case "7": return;
+            switch (command) {
+                case "1":
+                    createEvent(scanner);
+                    break;
+                case "2":
+                    readEvent();
+                    break;
+                case "3":
+                    updateEvent(scanner);
+                    break;
+                case "4":
+                    deleteEvent(scanner);
+                    break;
+                case "5":
+                    readAllEvents();
+                    break;
+                case "6":
+                    deleteAllEvents();
+                    break;
+                case "7":
+                    return;
+            }
         }
     }
 

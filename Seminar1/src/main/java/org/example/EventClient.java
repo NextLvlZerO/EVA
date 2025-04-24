@@ -10,6 +10,41 @@ public class EventClient {
         eventService = new EventService();
     }
 
+    public void run(){
+        Scanner scanner = new Scanner(System.in);
+        outer: while(true){
+
+            System.out.println("What would you like to do?");
+            System.out.println("1 - Create a new event");
+            System.out.println("2 - Get an event");
+            System.out.println("3 - Update an event");
+            System.out.println("4 - Delete a event");
+            System.out.println("5 - Get all events");
+            System.out.println("6 - Delete all events");
+            System.out.println("7 - Exit");
+
+            String command = scanner.nextLine();
+
+            switch(command){
+                case "1":createEvent(scanner);
+                    break;
+                case "2":readEvent();
+                    break;
+                case "3":updateEvent();
+                    break;
+                case "4":deleteEvent(scanner);
+                    break;
+                case "5":readAllEvents();
+                    break;
+                case "6":System.out.println("");
+                    break;
+                case "7": break outer;
+            }
+        }
+    }
+
+
+
     public void createEvent(Scanner sc) {
 
         System.out.println("Creating a new event");

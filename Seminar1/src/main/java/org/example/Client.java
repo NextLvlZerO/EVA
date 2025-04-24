@@ -3,10 +3,10 @@ package org.example;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-public class EventClient {
+public class Client {
     private EventService eventService;
 
-    public EventClient() {
+    public Client() {
         eventService = new EventService();
     }
 
@@ -14,36 +14,59 @@ public class EventClient {
         Scanner scanner = new Scanner(System.in);
         outer: while(true){
 
-            System.out.println("What would you like to do?");
-            System.out.println("1 - Create a new event");
-            System.out.println("2 - Get an event");
-            System.out.println("3 - Update an event");
-            System.out.println("4 - Delete a event");
-            System.out.println("5 - Get all events");
-            System.out.println("6 - Delete all events");
-            System.out.println("7 - Exit");
+            System.out.println("Management System");
+            System.out.println("--------------------");
+            System.out.println("1 - Event service");
+            System.out.println("2 - Customer service");
+            System.out.println("3 - Exit");
 
             String command = scanner.nextLine();
-
             switch(command){
-                case "1":createEvent(scanner);
-                    break;
-                case "2":readEvent();
-                    break;
-                case "3":updateEvent();
-                    break;
-                case "4":deleteEvent(scanner);
-                    break;
-                case "5":readAllEvents();
-                    break;
-                case "6":deleteAllEvents();
-                    break;
-                case "7": break outer;
+                case "1":{
+                    eventManagement(scanner);
+                }
+                case "2": {
+                    customerManagement(scanner);
+                }
+                case "3": {
+                    System.exit(0);
+                }
             }
         }
     }
 
+    public void eventManagement(Scanner scanner){
+        System.out.println("What would you like to do?");
+        System.out.println("1 - Create a new event");
+        System.out.println("2 - Get an event");
+        System.out.println("3 - Update an event");
+        System.out.println("4 - Delete a event");
+        System.out.println("5 - Get all events");
+        System.out.println("6 - Delete all events");
+        System.out.println("7 - Exit");
 
+        String command = scanner.nextLine();
+
+        switch(command){
+            case "1":createEvent(scanner);
+                break;
+            case "2":readEvent();
+                break;
+            case "3":updateEvent();
+                break;
+            case "4":deleteEvent(scanner);
+                break;
+            case "5":readAllEvents();
+                break;
+            case "6":deleteAllEvents();
+                break;
+            case "7": System.exit(0);
+        }
+    }
+
+    public void customerManagement(Scanner scanner){
+        System.out.println("TODO");
+    }
 
     public void createEvent(Scanner sc) {
 

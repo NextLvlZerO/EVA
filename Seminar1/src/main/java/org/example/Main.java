@@ -1,13 +1,10 @@
 package org.example;
-import java.time.LocalDateTime;
-import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args){
-
         try{
-            EventClient eventClient = new EventClient();
+            Client eventClient = new Client();
             eventClient.run();
         }
         catch(Exception e){

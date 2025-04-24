@@ -20,6 +20,7 @@ public class EventService {
 
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
         events.add(currentEvent);
+        System.out.println("Event successfully created, id: " + id);
     }
 
     public void readEvent(int id) {

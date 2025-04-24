@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ public class Client {
         outer: while(true){
 
             System.out.println("Management System");
-            System.out.println("--------------------");
+            System.out.println("-----------------");
             System.out.println("1 - Event service");
             System.out.println("2 - Customer service");
             System.out.println("3 - Exit");
@@ -24,9 +25,11 @@ public class Client {
             switch(command){
                 case "1":{
                     eventManagement(scanner);
+                    break;
                 }
                 case "2": {
                     customerManagement(scanner);
+                    break;
                 }
                 case "3": {
                     System.exit(0);
@@ -71,13 +74,26 @@ public class Client {
     public void createEvent(Scanner sc) {
 
         System.out.println("Creating a new event");
-        System.out.println("Please enter the data of the event you would like to create");
-        System.out.println("Pattern: name, location, date, tickets");
-        String input = sc.nextLine();
-        String[] data = input.split(", ");
+
+        System.out.println("Name:");
+        String name = sc.nextLine();
+
+        System.out.println("Location:");
+        String location = sc.nextLine();
+
+        System.out.println("Date (yyyy-MM-dd):");
+        String date = sc.nextLine();
+
+        System.out.println("Tickets:");
+        int tickets = sc.nextInt();
+
+//        System.out.println("Please enter the data of the event you would like to create");
+ //       System.out.println("Pattern: name, location, date, tickets");
+  //      String input = sc.nextLine();
+   //     String[] data = input.split(", ");
 
         try {
-            eventService.createEvent(data[0], data[1], LocalDateTime.parse(data[2]), Integer.parseInt(data[3]));
+            eventService.createEvent(name, location, LocalDateTime.parse(date+"T10:10:10"), tickets);
         } catch (Exception e) {
             e.printStackTrace();
         }

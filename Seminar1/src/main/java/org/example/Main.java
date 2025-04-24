@@ -5,7 +5,13 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args){
-        EventClient eventClient = new EventClient();
-        eventClient.run();
+
+        try{
+            EventClient eventClient = new EventClient();
+            eventClient.run();
+        }
+        catch(Exception e){
+           System.out.println("Error:" + e.getMessage());
+        }
     }
 }

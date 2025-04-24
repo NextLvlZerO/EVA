@@ -71,14 +71,15 @@ public class CustomerService {
         }
     }
 
-    public void readCustomer(int id) {
+    public Customer readCustomer(int id) {
 
         for (Customer customer : customers) {
             if (customer.getId() == id) {
                 System.out.println(customer);
-                return;
+                return customer;
             }
         }
+        return null;
     }
 
     public void printAllCustomers() {

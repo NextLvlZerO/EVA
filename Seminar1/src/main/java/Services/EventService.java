@@ -27,13 +27,14 @@ public class EventService {
         System.out.println("Event successfully created, id: " + id);
     }
 
-    public void readEvent(int id) {
+    public Event readEvent(int id) {
         for (Event event : events) {
             if (event.getId() == id) {
                 System.out.println(event);
-                return;
+                return event;
             }
         }
+        return null;
     }
 
     public void updateEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException {

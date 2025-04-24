@@ -1,6 +1,8 @@
 package Main;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Customer {
 
@@ -8,12 +10,14 @@ public class Customer {
     private String username;
     private String email;
     private LocalDate birthday;
+    private List<Ticket> ticketList;
 
     public Customer(int id, String username, String email, LocalDate birthday) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.birthday = birthday;
+        this.ticketList = new ArrayList<>();
     }
 
 
@@ -50,5 +54,17 @@ public class Customer {
                 + "\nusername:" + username
                 + "\nemail:" + email
                 + "\nbirthday: " + birthday);
+    }
+
+    public List<Ticket> getTicketList() {
+        return ticketList;
+    }
+
+    public void addTicket(Ticket ticket){
+        this.ticketList.add(ticket);
+    }
+
+    public void deleteTicket(Ticket ticket){
+        this.ticketList.remove(ticket);
     }
 }

@@ -1,6 +1,8 @@
 package Main;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Event {
     private int id;
@@ -8,6 +10,7 @@ public class Event {
     private String ort;
     private LocalDateTime datum;
     private int tickets;
+    private List<Ticket> ticketList = new ArrayList<>();
 
     public Event(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets){
         this.id = id;
@@ -64,6 +67,18 @@ public class Event {
                 + "\nort:" + ort
                 + "\ndatum: " + datum
                 + "\ntickets: " + tickets);
+    }
+
+    public List<Ticket> getTicketList() {
+        return ticketList;
+    }
+
+    public void addTicket(Ticket ticket){
+        this.ticketList.add(ticket);
+    }
+
+    public void deleteTicket(Ticket ticket){
+        this.ticketList.remove(ticket);
     }
 }
 

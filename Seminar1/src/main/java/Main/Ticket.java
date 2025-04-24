@@ -46,4 +46,12 @@ public class Ticket {
     public void setEvent(Event event) {
         this.event = event;
     }
+
+    @Override
+    public String toString() {
+        return ("------------\nTicket mit:\nid:" + id
+                + "\ndate: " + date
+                + "\ncustomer: " + customer
+                + "\nevent: " + event);
+    }
 }

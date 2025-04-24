@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class EventClient {
-    EventService eventService;
+    private EventService eventService;
 
     public EventClient() {
         eventService = new EventService();

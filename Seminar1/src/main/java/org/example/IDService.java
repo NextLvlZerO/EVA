@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class IDService {
-    Set<Integer> ids;
+    private Set<Integer> ids;
 
     public IDService() {
         ids = new HashSet<>();

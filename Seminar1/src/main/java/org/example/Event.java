@@ -3,11 +3,11 @@ package org.example;
 import java.time.LocalDateTime;
 
 public class Event {
-    int id;
-    String bezeichnung;
-    String ort;
-    LocalDateTime datum;
-    int tickets;
+    private int id;
+    private String bezeichnung;
+    private String ort;
+    private LocalDateTime datum;
+    private int tickets;
 
     public Event(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets){
         this.id = id;

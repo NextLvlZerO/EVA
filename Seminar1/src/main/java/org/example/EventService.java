@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventService {
-    List<Event> events;
-    IDService idservice;
+    private List<Event> events;
+    private IDService idservice;
 
     public EventService() {
         events = new ArrayList<>();
@@ -24,7 +24,7 @@ public class EventService {
 
     public void readEvent(int id) {
         for (Event event : events) {
-            if (event.id == id) {
+            if (event.getId() == id) {
                 System.out.println(event);
                 return;
             }
@@ -34,11 +34,11 @@ public class EventService {
     public void updateEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException {
         if (tickets < 0) throw new NegativeNumberException("ticket must be positive");
         for (Event event : events) {
-            if (event.id == id) {
-                event.bezeichnung = bezeichnung;
-                event.ort = ort;
-                event.datum = datum;
-                event.tickets = tickets;
+            if (event.getId() == id) {
+                event.setBezeichnung(bezeichnung);
+                event.setOrt(ort);
+                event.setDatum(datum);
+                event.setTickets(tickets);
                 return;
             }
         }
@@ -47,12 +47,12 @@ public class EventService {
     public void deleteEvent(int id) {
         Event tempEvent = null;
         for (Event event : events) {
-            if (event.id == id) {
+            if (event.getId() == id) {
                 tempEvent = event;
             }
         }
         if (tempEvent != null) {
-            int current_id = tempEvent.id;
+            int current_id = tempEvent.getId();
             idservice.removeId(current_id);
             events.remove(tempEvent);
         }

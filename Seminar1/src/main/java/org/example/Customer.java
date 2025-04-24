@@ -43,4 +43,12 @@ public class Customer {
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
+
+    @Override
+    public String toString() {
+        return ("------------\nCustomer mit:\nid:" + id
+                + "\nusername:" + username
+                + "\nemail:" + email
+                + "\nbirthday: " + birthday);
+    }
 }

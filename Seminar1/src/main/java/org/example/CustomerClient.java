@@ -20,7 +20,7 @@ public class CustomerClient {
             System.out.println("4 - Delete a customer");
             System.out.println("5 - Get all customers");
             System.out.println("6 - Delete all customers");
-            System.out.println("7 - Exit");
+            System.out.println("7 - Close");
 
             String command = scanner.nextLine();
 

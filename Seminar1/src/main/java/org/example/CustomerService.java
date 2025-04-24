@@ -19,7 +19,7 @@ public class CustomerService {
         if (LocalDate.now().minusYears(18).minusDays(1).isBefore(birthday)) {
             throw new IllegalArgumentException("Customer has to be at least 18 years old");
         }
-        if (!email.contains("@") || email.indexOf("@") != email.lastIndexOf("@") || email.indexOf("@") < email.lastIndexOf(".")) {
+        if (!email.contains("@") || email.indexOf("@") != email.lastIndexOf("@") || email.indexOf("@") > email.lastIndexOf(".")) {
             throw new IllegalArgumentException("invalid email");
         }
 

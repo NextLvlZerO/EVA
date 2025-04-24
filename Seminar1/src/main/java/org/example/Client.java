@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 public class Client {
     private EventService eventService;
+    private CustomerService customerService;
 
     public Client() {
         eventService = new EventService();
+        customerService = new CustomerService();
     }
 
     public void run(){
@@ -43,7 +45,7 @@ public class Client {
         System.out.println("1 - Create a new event");
         System.out.println("2 - Get an event");
         System.out.println("3 - Update an event");
-        System.out.println("4 - Delete a event");
+        System.out.println("4 - Delete an event");
         System.out.println("5 - Get all events");
         System.out.println("6 - Delete all events");
         System.out.println("7 - Exit");
@@ -55,7 +57,7 @@ public class Client {
                 break;
             case "2":readEvent();
                 break;
-            case "3":updateEvent();
+            case "3":updateEvent(scanner);
                 break;
             case "4":deleteEvent(scanner);
                 break;
@@ -68,7 +70,50 @@ public class Client {
     }
 
     public void customerManagement(Scanner scanner){
-        System.out.println("TODO");
+        System.out.println("What would you like to do?");
+        System.out.println("1 - Create a new customer");
+        System.out.println("2 - Get a customer");
+        System.out.println("3 - Update a customer");
+        System.out.println("4 - Delete a customer");
+        System.out.println("5 - Get all customers");
+        System.out.println("6 - Delete all customers");
+        System.out.println("7 - Exit");
+
+        String command = scanner.nextLine();
+
+        switch(command){
+            case "1":createCustomer(scanner);
+            break;
+
+
+        }
+    }
+
+    public void createCustomer(Scanner scanner){
+        System.out.println("Creating an new customer");
+
+        System.out.println("Username:");
+        String name = scanner.nextLine();
+
+        System.out.println("Email:");
+        String email = scanner.nextLine();
+
+        System.out.println("Bithday:");
+        String birthdayStr = scanner.nextLine();
+        LocalDate birthday = LocalDate.parse(birthdayStr);
+
+        try {
+            customerService.createCustomer(name, email, birthday);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteCustomer(Scanner scanner){
+        System.out.println("Deleting a customer");
+        System.out.println("Please enter the id of the event you would like to delete");
+        String input = scanner.nextLine();
+        customerService.deleteCustomer(Integer.parseInt(input));
     }
 
     public void createEvent(Scanner sc) {
@@ -115,8 +160,7 @@ public class Client {
         eventService.readEvent(Integer.parseInt(input));
     }
 
-    public void updateEvent() {
-        Scanner sc = new Scanner(System.in);
+    public void updateEvent(Scanner sc) {
         System.out.println("Updating a event");
         System.out.println("Please enter the data of the event you would like to update");
         System.out.println("Pattern:id, name, location, date, tickets");

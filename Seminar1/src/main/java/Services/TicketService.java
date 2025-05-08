@@ -1,14 +1,14 @@
 package Services;
 
-import Main.Customer;
-import Main.Event;
-import Main.Ticket;
+import Models.Customer;
+import Models.Event;
+import Models.Ticket;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketService {
+public class TicketService implements Interfaces.TicketServiceInterface{
 
     IDService idService;
     List<Ticket> tickets;
@@ -22,10 +22,11 @@ public class TicketService {
        this.eventService = eventService;
    }
 
-   public void createTicket(int customerId, int eventId) {
+   @Override
+   public void createTicket(int customerId, int eventId) throws Exception {
 
-       Customer customer = customerService.readCustomer(customerId);
-       Event event = eventService.readEvent(eventId);
+       Customer customer = customerService.getCustomer(customerId);
+       Event event = eventService.getEvent(eventId);
 
        if (customer == null || event == null) throw new IllegalArgumentException("Customer or Event not found");
 
@@ -41,17 +42,36 @@ public class TicketService {
        customer.addTicket(ticket);
    }
 
-   public Ticket readTicket(int id){
+   @Override
+   public boolean validateTicket(int ticketId, int customerId, int eventId) {
+       if (getTicket(ticketId) == null) {
+           return false;
+       } else if (customerService.getCustomer(customerId) == null) {
+           return false;
+       } else if (eventService.getEvent(eventId) == null) {
+           return false;
+       } else if (getTicket(ticketId).getCustomer().getId() != customerId) {
+           return false;
+       } else return getTicket(ticketId).getEvent().getId() == eventId;
+   }
+
+   @Override
+   public Ticket getTicket(int id){
        for (Ticket ticket : tickets) {
            if (ticket.getId() == id) {
-               System.out.println(ticket);
                return ticket;
            }
        }
        return null;
    }
 
-   public void deleteTicket(int id){
+   @Override
+   public List<Ticket> getAllTickets(){
+       return tickets;
+   }
+
+   @Override
+   public void deleteTicket(int id) throws Exception {
        Ticket tempTicket = null;
        for (Ticket ticket : tickets){
            if (ticket.getId() == id){
@@ -59,7 +79,7 @@ public class TicketService {
                break;
            }
        }
-       if (tempTicket == null) return;
+       if (tempTicket == null) throw new IllegalArgumentException("Ticket not found");
 
        Event event = tempTicket.getEvent();
        event.setTickets(event.getTickets() + 1);
@@ -69,6 +89,13 @@ public class TicketService {
        customer.deleteTicket(tempTicket);
 
        tickets.remove(tempTicket);
+   }
+
+   @Override
+   public void deleteAllTickets(){
+       for (Ticket ticket : tickets) {
+           tickets.remove(ticket);
+       }
    }
 
 }

@@ -1,14 +1,14 @@
 package Services;
 
-import Main.Event;
-import Main.InvalidDateException;
-import Main.NegativeNumberException;
+import Models.Event;
+import Exceptions.InvalidDateException;
+import Exceptions.NegativeNumberException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventService {
+public class EventService implements Interfaces.EventServiceInterface{
     private List<Event> events;
     private IDService idservice;
 
@@ -17,9 +17,14 @@ public class EventService {
         idservice = new IDService();
     }
 
-    public void createEvent(String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException {
-        if (tickets < 0 && LocalDateTime.now().isAfter(datum))
-            throw new NegativeNumberException("ticket must be positive");
+    @Override
+    public void createEvent(String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException {
+        if (tickets < 0) {
+            throw new NegativeNumberException("ticket amount must be positive");
+        }
+        if (LocalDateTime.now().isAfter(datum)) {
+            throw new InvalidDateException("ticket must be in future");
+        }
         int id = idservice.addId();
 
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
@@ -27,18 +32,23 @@ public class EventService {
         System.out.println("Event successfully created, id: " + id);
     }
 
-    public Event readEvent(int id) {
+    @Override
+    public Event getEvent(int id) {
         for (Event event : events) {
             if (event.getId() == id) {
-                System.out.println(event);
                 return event;
             }
         }
         return null;
     }
 
+    @Override
     public void updateEvent(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException {
-        if (tickets < 0) throw new NegativeNumberException("ticket must be positive");
+        if (tickets < 0) throw new NegativeNumberException("ticket amount must be positive");
+        if (LocalDateTime.now().isAfter(datum)) {
+            throw new InvalidDateException("ticket must be in future");
+        }
+
         for (Event event : events) {
             if (event.getId() == id) {
                 event.setBezeichnung(bezeichnung);
@@ -50,26 +60,29 @@ public class EventService {
         }
     }
 
-    public void deleteEvent(int id) {
+    @Override
+    public void deleteEvent(int id) throws IllegalArgumentException {
         Event tempEvent = null;
         for (Event event : events) {
             if (event.getId() == id) {
                 tempEvent = event;
             }
         }
-        if (tempEvent != null) {
-            int current_id = tempEvent.getId();
-            idservice.removeId(current_id);
-            events.remove(tempEvent);
-        }
+        if (tempEvent == null) throw new IllegalArgumentException("Event with id " + id + " not found");
+
+        int current_id = tempEvent.getId();
+        idservice.removeId(current_id);
+        events.remove(tempEvent);
     }
 
+    @Override
     public void printAllEvents() {
         for (Event event : events) {
             System.out.println(event);
         }
     }
 
+    @Override
     public void deleteAllEvents() {
         while (!events.isEmpty()) {
             events.remove(0);

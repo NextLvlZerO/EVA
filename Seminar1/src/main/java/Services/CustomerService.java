@@ -1,12 +1,13 @@
 package Services;
 
-import Main.Customer;
+import Interfaces.CustomerServiceInterface;
+import Models.Customer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerService {
+public class CustomerService implements Interfaces.CustomerServiceInterface{
 
     private List<Customer> customers;
     private IDService idService;
@@ -16,7 +17,8 @@ public class CustomerService {
         customers = new ArrayList<Customer>();
     }
 
-    public void createCustomer(String username, String email, LocalDate birthday) {
+    @Override
+    public void createCustomer(String username, String email, LocalDate birthday) throws IllegalArgumentException {
 
         if (LocalDate.now().minusYears(18).minusDays(1).isBefore(birthday)) {
             throw new IllegalArgumentException("Customer has to be at least 18 years old");
@@ -32,7 +34,8 @@ public class CustomerService {
 
     }
 
-    public void deleteCustomer(int id) {
+    @Override
+    public void deleteCustomer(int id) throws IllegalArgumentException {
         Customer tempCustomer = null;
         for (Customer customer : customers) {
             if (customer.getId() == id) {
@@ -40,13 +43,17 @@ public class CustomerService {
                 break;
             }
         }
-        if (tempCustomer != null) {
-            int current_id = tempCustomer.getId();
-            idService.removeId(current_id);
-            customers.remove(tempCustomer);
+
+        if (tempCustomer == null) {
+            throw new IllegalArgumentException("Customer not found");
         }
+
+        int current_id = tempCustomer.getId();
+        idService.removeId(current_id);
+        customers.remove(tempCustomer);
     }
 
+    @Override
     public void updateCustomer(int id, String username, String email, LocalDate birthday) {
 
         if (LocalDate.now().minusYears(18).isBefore(birthday)) {
@@ -71,7 +78,8 @@ public class CustomerService {
         }
     }
 
-    public Customer readCustomer(int id) {
+    @Override
+    public Customer getCustomer(int id) {
 
         for (Customer customer : customers) {
             if (customer.getId() == id) {
@@ -82,12 +90,14 @@ public class CustomerService {
         return null;
     }
 
+    @Override
     public void printAllCustomers() {
         for (Customer customer : customers) {
             System.out.println(customer);
         }
     }
 
+    @Override
     public void deleteAllCustomers() {
         customers.clear();
     }

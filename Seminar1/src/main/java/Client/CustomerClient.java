@@ -1,5 +1,6 @@
 package Client;
 
+import Interfaces.CustomerServiceInterface;
 import Services.CustomerService;
 
 import java.time.LocalDate;
@@ -7,10 +8,10 @@ import java.util.Scanner;
 
 public class CustomerClient {
 
-    CustomerService customerService;
+    CustomerServiceInterface customerService;
 
-    public CustomerClient() {
-        this.customerService = new CustomerService();
+    public CustomerClient(CustomerServiceInterface customerService) {
+        this.customerService = customerService;
     }
 
     public void customerManagement(Scanner scanner){
@@ -29,7 +30,7 @@ public class CustomerClient {
             switch(command){
                 case "1":createCustomer(scanner);
                     break;
-                case "2":getCustomer(scanner);
+                case "2":readCustomer(scanner);
                     break;
                 case "3":updateCustomer(scanner);
                     break;
@@ -66,16 +67,22 @@ public class CustomerClient {
 
     public void deleteCustomer(Scanner scanner){
         System.out.println("Deleting a customer");
-        System.out.println("Please enter the id of the event you would like to delete");
+        System.out.println("Please enter the id of the customer you would like to delete");
         String input = scanner.nextLine();
-        customerService.deleteCustomer(Integer.parseInt(input));
+        try {
+            customerService.deleteCustomer(Integer.parseInt(input));
+            System.out.println("Customer deleted successfully");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
-    public void getCustomer(Scanner scanner){
+    public void readCustomer(Scanner scanner){
         System.out.println("Reading a customer");
         System.out.println("Please enter the id of the event you would like to read");
         String input = scanner.nextLine();
-        customerService.readCustomer(Integer.parseInt(input));
+        customerService.getCustomer(Integer.parseInt(input));
     }
 
     public void updateCustomer(Scanner scanner){

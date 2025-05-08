@@ -1,4 +1,4 @@
-package Main;
+package Exceptions;
 
 public class InvalidDateException extends Exception{
 

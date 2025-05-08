@@ -1,18 +1,20 @@
 package Client;
 
+import Interfaces.EventServiceInterface;
+import Models.Event;
 import Services.EventService;
-import Main.InvalidDateException;
-import Main.NegativeNumberException;
+import Exceptions.InvalidDateException;
+import Exceptions.NegativeNumberException;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class EventClient {
 
-    EventService eventService;
+    EventServiceInterface eventService;
 
-    public EventClient() {
-        this.eventService = new EventService();
+    public EventClient(EventServiceInterface eventService) {
+        this.eventService = eventService;
     }
 
     public void eventManagement(Scanner scanner) {
@@ -81,7 +83,7 @@ public class EventClient {
         try {
             eventService.createEvent(name, location, LocalDateTime.parse(date+"T10:10:10"), tickets);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
     }
@@ -90,7 +92,13 @@ public class EventClient {
         System.out.println("Deleting a event");
         System.out.println("Please enter the id of the event you would like to delete");
         String input = sc.nextLine();
-        eventService.deleteEvent(Integer.parseInt(input));
+        try {
+            eventService.deleteEvent(Integer.parseInt(input));
+            System.out.println("Event deleted");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public void readEvent() {
@@ -98,7 +106,12 @@ public class EventClient {
         System.out.println("Reading a event");
         System.out.println("Please enter the id of the event you would like to read");
         String input = sc.nextLine();
-        eventService.readEvent(Integer.parseInt(input));
+        Event event = eventService.getEvent(Integer.parseInt(input));
+        if (event == null) {
+            System.out.println("Event not found");
+        } else {
+            System.out.println(event);
+        }
     }
 
     public void updateEvent(Scanner sc) {

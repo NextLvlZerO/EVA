@@ -10,16 +10,23 @@ import java.util.List;
 
 public class TicketService implements Interfaces.TicketServiceInterface{
 
-    IDService idService;
+    IDServiceParallel idService;
     List<Ticket> tickets;
     CustomerService customerService;
     EventService eventService;
 
    public TicketService(CustomerService customerService, EventService eventService) {
-       idService = new IDService();
+       idService = new IDServiceParallel();
        tickets = new ArrayList<>();
        this.customerService = customerService;
        this.eventService = eventService;
+
+       try{
+           idService.addId();
+       }
+       catch (Exception e){
+           System.out.println(e.getMessage());
+       }
    }
 
    @Override

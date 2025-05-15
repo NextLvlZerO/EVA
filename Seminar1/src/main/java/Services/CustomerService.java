@@ -9,10 +9,10 @@ import java.util.*;
 public class CustomerService implements Interfaces.CustomerServiceInterface{
 
     private Map<Integer, Customer> customers;
-    private IDService idService;
+    private IDServiceParallel idService;
 
     public CustomerService() {
-        idService = new IDService();
+        idService = new IDServiceParallel();
         customers = new HashMap<Integer, Customer>();
     }
 
@@ -26,9 +26,15 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
             throw new IllegalArgumentException("invalid email");
         }
 
-        Customer customer = new Customer(idService.addId(), username, email, birthday);
 
-        customers.put(customer.getId(),customer);
+        try{
+            Customer customer = new Customer(idService.addId(), username, email, birthday);
+            customers.put(customer.getId(),customer);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
 
 
     }

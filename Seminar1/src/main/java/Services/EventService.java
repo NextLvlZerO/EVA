@@ -4,6 +4,7 @@ import Models.Event;
 import Exceptions.InvalidDateException;
 import Exceptions.NegativeNumberException;
 
+import javax.swing.table.TableRowSorter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +13,11 @@ import java.util.Map;
 
 public class EventService implements Interfaces.EventServiceInterface{
     private Map<Integer, Event> events;
-    private IDService idservice;
+    private IDServiceParallel idserviceParallel;
 
     public EventService() {
         events = new HashMap<>();
-        idservice = new IDService();
+        idserviceParallel = new IDServiceParallel();
     }
 
     @Override
@@ -27,12 +28,20 @@ public class EventService implements Interfaces.EventServiceInterface{
         if (LocalDateTime.now().isAfter(datum)) {
             throw new InvalidDateException("ticket must be in future");
         }
-        int id = idservice.addId();
 
-        Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
-        events.put(currentEvent.getId(), currentEvent);
-        System.out.println("Event successfully created, id: " + id);
-        return currentEvent;
+        try {
+            int id = idserviceParallel.addId();
+            Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
+            events.put(currentEvent.getId(), currentEvent);
+            System.out.println("Event successfully created, id: " + id);
+            return currentEvent;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+
+
     }
 
     @Override
@@ -64,7 +73,7 @@ public class EventService implements Interfaces.EventServiceInterface{
         if (tempEvent == null) throw new IllegalArgumentException("Event with id " + id + " not found");
 
         int current_id = tempEvent.getId();
-        idservice.removeId(current_id);
+        idserviceParallel.removeId(current_id);
         events.remove(tempEvent);
     }
 

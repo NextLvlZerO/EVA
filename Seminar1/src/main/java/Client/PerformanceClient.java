@@ -86,7 +86,7 @@ public class PerformanceClient {
         System.out.println("Time: " + (endTime - startTime) + "ms");
 
         System.out.println("Finished test");
-        eventService.printAllEvents();
+
 
     }
 

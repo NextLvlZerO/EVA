@@ -18,7 +18,7 @@ public class EventService implements Interfaces.EventServiceInterface{
     }
 
     @Override
-    public void createEvent(String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException {
+    public Event createEvent(String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException {
         if (tickets < 0) {
             throw new NegativeNumberException("ticket amount must be positive");
         }
@@ -30,6 +30,7 @@ public class EventService implements Interfaces.EventServiceInterface{
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
         events.add(currentEvent);
         System.out.println("Event successfully created, id: " + id);
+        return currentEvent;
     }
 
     @Override

@@ -5,7 +5,9 @@ import Models.Customer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CustomerService implements Interfaces.CustomerServiceInterface{
 
@@ -14,7 +16,7 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
 
     public CustomerService() {
         idService = new IDService();
-        customers = new ArrayList<Customer>();
+        customers = new ArrayList<>();
     }
 
     @Override

@@ -3,7 +3,7 @@ package Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrimeNumberGenerator {
+public class PrimeNumberGenerator{
 
     public static int getPrimeNumber(int l, int r) {
         for (int i = 0; i < 20000; i++) {

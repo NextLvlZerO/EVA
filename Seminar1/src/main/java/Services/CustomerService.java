@@ -76,7 +76,7 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
         if (tempCustomer != null) {
             tempCustomer.setUsername(username);
             tempCustomer.setEmail(email);
-            tempCustomer.setBirthday(birthday);
+            tempCustomer.setBirthday(birthday),
         }
     }
 

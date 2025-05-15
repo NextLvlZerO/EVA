@@ -6,14 +6,16 @@ import Exceptions.NegativeNumberException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventService implements Interfaces.EventServiceInterface{
-    private List<Event> events;
+    private Map<Integer, Event> events;
     private IDService idservice;
 
     public EventService() {
-        events = new ArrayList<>();
+        events = new HashMap<>();
         idservice = new IDService();
     }
 
@@ -28,19 +30,14 @@ public class EventService implements Interfaces.EventServiceInterface{
         int id = idservice.addId();
 
         Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
-        events.add(currentEvent);
+        events.put(currentEvent.getId(), currentEvent);
         System.out.println("Event successfully created, id: " + id);
         return currentEvent;
     }
 
     @Override
     public Event getEvent(int id) {
-        for (Event event : events) {
-            if (event.getId() == id) {
-                return event;
-            }
-        }
-        return null;
+        return events.getOrDefault(id, null);
     }
 
     @Override
@@ -50,25 +47,20 @@ public class EventService implements Interfaces.EventServiceInterface{
             throw new InvalidDateException("ticket must be in future");
         }
 
-        for (Event event : events) {
-            if (event.getId() == id) {
-                event.setBezeichnung(bezeichnung);
-                event.setOrt(ort);
-                event.setDatum(datum);
-                event.setTickets(tickets);
-                return;
-            }
-        }
+        Event currentEvent = events.getOrDefault(id, null);
+        if (currentEvent == null) return;
+
+        currentEvent.setBezeichnung(bezeichnung);
+        currentEvent.setOrt(ort);
+        currentEvent.setDatum(datum);
+        currentEvent.setTickets(tickets);
     }
 
     @Override
     public void deleteEvent(int id) throws IllegalArgumentException {
-        Event tempEvent = null;
-        for (Event event : events) {
-            if (event.getId() == id) {
-                tempEvent = event;
-            }
-        }
+
+       Event tempEvent = events.remove(id);
+
         if (tempEvent == null) throw new IllegalArgumentException("Event with id " + id + " not found");
 
         int current_id = tempEvent.getId();
@@ -78,21 +70,23 @@ public class EventService implements Interfaces.EventServiceInterface{
 
     @Override
     public void printAllEvents() {
-        for (Event event : events) {
-            System.out.println(event);
+        for (Map.Entry<Integer, Event> event : events.entrySet()) {
+            System.out.println(event.getValue());
         }
     }
 
     @Override
     public List<Event> getAllEvents() {
-        return events;
+       List<Event> eventList = new ArrayList<>();
+       for (Map.Entry<Integer, Event> event : events.entrySet()){
+           eventList.add(event.getValue());
+       }
+       return eventList;
     }
 
     @Override
     public void deleteAllEvents() {
-        while (!events.isEmpty()) {
-            events.remove(0);
-        }
+        events.clear();
     }
 }
 

@@ -28,7 +28,7 @@ public class PerformanceClient {
     }
 
     public void stressTest() {
-
+        int startTime = (int) System.currentTimeMillis();
         System.out.println("Test");
 
         for (int i = 0; i < 100; i++) {
@@ -81,6 +81,9 @@ public class PerformanceClient {
 
             }
         }
+
+        int endTime = (int) System.currentTimeMillis();
+        System.out.println("Time: " + (endTime - startTime) + "ms");
 
         System.out.println("Finished test");
         eventService.printAllEvents();

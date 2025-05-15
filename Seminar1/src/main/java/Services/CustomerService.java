@@ -4,19 +4,16 @@ import Interfaces.CustomerServiceInterface;
 import Models.Customer;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CustomerService implements Interfaces.CustomerServiceInterface{
 
-    private List<Customer> customers;
+    private Map<Integer, Customer> customers;
     private IDService idService;
 
     public CustomerService() {
         idService = new IDService();
-        customers = new ArrayList<>();
+        customers = new HashMap<Integer, Customer>();
     }
 
     @Override
@@ -31,20 +28,15 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
 
         Customer customer = new Customer(idService.addId(), username, email, birthday);
 
-        customers.add(customer);
+        customers.put(customer.getId(),customer);
 
 
     }
 
     @Override
     public void deleteCustomer(int id) throws IllegalArgumentException {
-        Customer tempCustomer = null;
-        for (Customer customer : customers) {
-            if (customer.getId() == id) {
-                tempCustomer = customer;
-                break;
-            }
-        }
+
+        Customer tempCustomer = customers.remove(id);
 
         if (tempCustomer == null) {
             throw new IllegalArgumentException("Customer not found");
@@ -65,43 +57,34 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
             throw new IllegalArgumentException("invalid email");
         }
 
-        Customer tempCustomer = null;
-        for (Customer customer : customers) {
-            if (customer.getId() == id) {
-                tempCustomer = customer;
-                break;
-            }
-        }
+        Customer tempCustomer = customers.getOrDefault(id, null);
 
         if (tempCustomer != null) {
             tempCustomer.setUsername(username);
             tempCustomer.setEmail(email);
-            tempCustomer.setBirthday(birthday),
+            tempCustomer.setBirthday(birthday);
         }
     }
 
     @Override
     public Customer getCustomer(int id) {
-
-        for (Customer customer : customers) {
-            if (customer.getId() == id) {
-                System.out.println(customer);
-                return customer;
-            }
-        }
-        return null;
+       return customers.getOrDefault(id, null);
     }
 
     @Override
     public void printAllCustomers() {
-        for (Customer customer : customers) {
-            System.out.println(customer);
+        for (Map.Entry<Integer, Customer> customer : customers.entrySet()) {
+            System.out.println(customer.getValue());
         }
     }
 
     @Override
     public List<Customer> getAllCustomer() {
-        return customers;
+        List<Customer> customerList = new ArrayList<>();
+        for (Map.Entry<Integer, Customer> customer : customers.entrySet()){
+            customerList.add(customer.getValue());
+        }
+        return customerList;
     }
 
     @Override

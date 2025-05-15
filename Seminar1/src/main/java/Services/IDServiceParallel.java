@@ -35,7 +35,7 @@ public class IDServiceParallel {
 
     public void fillPreGeneratedIds() {
 
-        int threadAmount = 1;
+        int threadAmount = 8;
         List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < threadAmount; i++) {
             ParallelPrimeNumberGenerator generator = new ParallelPrimeNumberGenerator(1000000000, 2000000000, ids, preGeneratedIds);

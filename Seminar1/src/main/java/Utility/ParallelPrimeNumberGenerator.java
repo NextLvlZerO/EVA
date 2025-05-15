@@ -26,7 +26,7 @@ public class ParallelPrimeNumberGenerator extends Thread {
             if (PrimeNumberGenerator.isPrim(randomNumber)) {
                 continue;
             }
-            if (preGeneratedIds.size() > 10 && ids.contains(randomNumber) && preGeneratedIds.contains(randomNumber)) {
+            if (preGeneratedIds.size() > 1000 && ids.contains(randomNumber) && preGeneratedIds.contains(randomNumber)) {
                 break;
             }
 

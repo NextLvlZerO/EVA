@@ -18,6 +18,12 @@ public class EventService implements Interfaces.EventServiceInterface{
     public EventService() {
         events = new HashMap<>();
         idserviceParallel = new IDServiceParallel();
+        try {
+            idserviceParallel.addId();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

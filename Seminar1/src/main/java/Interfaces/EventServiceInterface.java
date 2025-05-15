@@ -5,6 +5,7 @@ import Exceptions.NegativeNumberException;
 import Models.Event;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface EventServiceInterface {
     void createEvent(String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException;
@@ -18,4 +19,6 @@ public interface EventServiceInterface {
     void printAllEvents();
 
     void deleteAllEvents();
+
+    List<Event> getAllEvents();
 }

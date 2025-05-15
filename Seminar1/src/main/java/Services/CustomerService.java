@@ -98,6 +98,11 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
     }
 
     @Override
+    public List<Customer> getAllCustomer() {
+        return customers;
+    }
+
+    @Override
     public void deleteAllCustomers() {
         customers.clear();
     }

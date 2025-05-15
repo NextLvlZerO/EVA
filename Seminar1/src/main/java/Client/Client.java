@@ -1,26 +1,24 @@
 package Client;
 
-import Main.Ticketshop;
-import Services.CustomerService;
-import Services.EventService;
-import Services.TicketService;
+import Main.TicketShop;
 
 import java.util.Scanner;
 
 public class Client {
 
-    private final Ticketshop ticketshop;
+    private final TicketShop ticketshop;
     private final EventClient eventClient;
     private final CustomerClient customerClient;
     private final TicketClient ticketClient;
+    private final PerformanceClient performanceClient;
 
 
     public Client() {
-        this.ticketshop = new Ticketshop();
+        this.ticketshop = new TicketShop();
         this.eventClient = new EventClient(ticketshop.getEventService());
         this.customerClient = new CustomerClient(ticketshop.getCustomerService());
         this.ticketClient = new TicketClient(ticketshop.getEventService(), ticketshop.getCustomerService(), ticketshop.getTicketService());
-
+        this.performanceClient = new PerformanceClient(ticketshop);
     }
 
     public void run(){
@@ -33,7 +31,8 @@ public class Client {
             System.out.println("1 - Event service");
             System.out.println("2 - Customer service");
             System.out.println("3 - Ticket service");
-            System.out.println("4 - Exit");
+            System.out.println("4 - Performance service");
+            System.out.println("5 - Exit");
 
             String command = scanner.nextLine();
             switch(command){
@@ -50,6 +49,10 @@ public class Client {
                     break;
                 }
                 case "4": {
+                    performanceClient.stressTest();
+                    break;
+                }
+                case "5": {
                     System.exit(0);
                 }
             }

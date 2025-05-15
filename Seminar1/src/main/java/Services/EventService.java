@@ -83,6 +83,11 @@ public class EventService implements Interfaces.EventServiceInterface{
     }
 
     @Override
+    public List<Event> getAllEvents() {
+        return events;
+    }
+
+    @Override
     public void deleteAllEvents() {
         while (!events.isEmpty()) {
             events.remove(0);

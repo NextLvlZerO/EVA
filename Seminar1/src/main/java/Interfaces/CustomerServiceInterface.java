@@ -3,6 +3,7 @@ package Interfaces;
 import Models.Customer;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface CustomerServiceInterface {
     void createCustomer(String username, String email, LocalDate birthday) throws IllegalArgumentException;
@@ -16,4 +17,6 @@ public interface CustomerServiceInterface {
     void printAllCustomers();
 
     void deleteAllCustomers();
+
+    List<Customer> getAllCustomer();
 }

@@ -11,6 +11,7 @@ public class Client {
     private final CustomerClient customerClient;
     private final TicketClient ticketClient;
     private final PerformanceClient performanceClient;
+    private final PerformanceClientParallel performanceClientParallel;
 
 
     public Client() {
@@ -19,6 +20,7 @@ public class Client {
         this.customerClient = new CustomerClient(ticketshop.getCustomerService());
         this.ticketClient = new TicketClient(ticketshop.getEventService(), ticketshop.getCustomerService(), ticketshop.getTicketService());
         this.performanceClient = new PerformanceClient(ticketshop);
+        this.performanceClientParallel = new PerformanceClientParallel(ticketshop);
     }
 
     public void run(){
@@ -32,7 +34,8 @@ public class Client {
             System.out.println("2 - Customer service");
             System.out.println("3 - Ticket service");
             System.out.println("4 - Performance service");
-            System.out.println("5 - Exit");
+            System.out.println("5 - Performance service parallel");
+            System.out.println("6 - Exit");
 
             String command = scanner.nextLine();
             switch(command){
@@ -53,6 +56,11 @@ public class Client {
                     break;
                 }
                 case "5": {
+                    performanceClientParallel.stressTest();
+                    break;
+                }
+
+                case "6": {
                     System.exit(0);
                 }
             }

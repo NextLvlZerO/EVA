@@ -3,21 +3,23 @@ package Models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Event {
     private int id;
     private String bezeichnung;
     private String ort;
     private LocalDateTime datum;
-    private int tickets;
-    private List<Ticket> ticketList = new ArrayList<>();
+    private AtomicInteger tickets;
+    private List<Ticket> ticketList;
 
     public Event(int id, String bezeichnung, String ort, LocalDateTime datum, int tickets){
         this.id = id;
         this.bezeichnung = bezeichnung;
         this.ort = ort;
         this.datum = datum;
-        this.tickets = tickets;
+        this.tickets = new AtomicInteger(tickets);
+        this.ticketList = new ArrayList<>();
     }
 
     public int getId() {
@@ -53,11 +55,11 @@ public class Event {
     }
 
     public int getTickets() {
-        return tickets;
+        return tickets.get();
     }
 
     public void setTickets(int tickets) {
-        this.tickets = tickets;
+        this.tickets.set(tickets);
     }
 
     @Override

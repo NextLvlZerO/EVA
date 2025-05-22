@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class IDServiceParallel {
-    private Set<Integer> ids;
+    private ConcurrentLinkedQueue<Integer> ids;
     private List<Integer> preGeneratedIds;
 
     public IDServiceParallel() {
-        ids = new HashSet<>();
+        ids = new ConcurrentLinkedQueue<>();
+
         preGeneratedIds = new ArrayList<>();
     }
 

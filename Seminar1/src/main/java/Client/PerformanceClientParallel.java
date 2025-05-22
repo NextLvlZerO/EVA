@@ -31,15 +31,12 @@ public class PerformanceClientParallel {
         this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
-
    public void stressTest() throws InterruptedException {
 
        final int startTime = (int) System.currentTimeMillis();
 
        CountDownLatch latchStep1 = new CountDownLatch(100);
        CountDownLatch latchStep2 = new CountDownLatch(1000);
-
-       long startTime1 = System.currentTimeMillis();
 
        for (int i = 1; i <= 100; i++) {
            final int idx = i;
@@ -60,7 +57,6 @@ public class PerformanceClientParallel {
        }
 
        for (int i = 0; i < 1000; i++) {
-           final int idx = i;
            executor.submit(() -> {
                try {
                    customerService.createCustomer("Oskar suxx", "foo@web.de", LocalDate.of(2002, 10, 10));
@@ -75,18 +71,22 @@ public class PerformanceClientParallel {
        latchStep1.await();
        latchStep2.await();
 
-       List<Event> events = eventService.getAllEvents();
-       List<Customer> customers = customerService.getAllCustomer();
+       List<Event> events = new ArrayList<>(eventService.getAllEvents());
+       List<Customer> customers = new ArrayList<>(customerService.getAllCustomer());
 
 
        CountDownLatch latchStep3 = new CountDownLatch(events.size() * customers.size());
 
-       for (Event e : events) {
-           for (Customer c : customers) {
+       for (int i = 0; i < events.size(); i++) {
+           for (int j = 0; j < customers.size(); j++) {
+               final Event currentEvent = events.get(i);
+               final Customer currentCustomer = customers.get(j);
+
                executor.submit(() -> {
                    try {
-                       ticketService.createTicket(c.getId(), e.getId());
+                      ticketService.createTicket(currentCustomer.getId(), currentEvent.getId());
                    } catch (Exception E) {
+                       System.out.println("Latch3:");
                        E.printStackTrace();
                    } finally {
                        latchStep3.countDown();
@@ -97,7 +97,6 @@ public class PerformanceClientParallel {
        latchStep3.await();
        int endTime = (int) System.currentTimeMillis();
        System.out.println("Time: " + (endTime - startTime) + "ms");
-
        System.out.println("Finished test");
 
 
@@ -107,12 +106,12 @@ public class PerformanceClientParallel {
            final int idx = i;
            executor.submit(() -> {
                try {
-                   secondEvents.add(eventService.createEvent(
+                   eventService.createEvent(
                            "Event " + idx,
                            "Location " + idx,
                            LocalDateTime.now().plusDays(idx),
                            1000000
-                   ));
+                   );
                } catch (Exception e) {
                    e.printStackTrace();
                } finally {
@@ -122,16 +121,23 @@ public class PerformanceClientParallel {
        }
        latchStep4.await();
 
+       secondEvents = eventService.getAllEvents().subList(events.size(), events.size() + 100);
 
+
+       System.out.println("step 4 finished");
 
 
        CountDownLatch latchStep5 = new CountDownLatch(secondEvents.size() * customers.size() * 2);
-       for (Event e : secondEvents) {
-           for (Customer c : customers) {
+       for (int i = 0; i < secondEvents.size(); i++) {
+           for (int j = 0; j < customers.size(); j++) {
+
+               final Event currentEvent = secondEvents.get(i);
+               final Customer currentCustomer = customers.get(j);
+
                executor.submit(() -> {
                    try {
-                       ticketService.createTicket(c.getId(), e.getId());
-                       ticketService.createTicket(c.getId(), e.getId());
+                       ticketService.createTicket(currentCustomer.getId(), currentEvent.getId());
+                       ticketService.createTicket(currentCustomer.getId(), currentEvent.getId());
                    } catch (Exception ex) {
                        ex.printStackTrace();
                    } finally {
@@ -140,12 +146,14 @@ public class PerformanceClientParallel {
                    }
                });
            }
-           latchStep5.await();
-
-           executor.shutdown();
-           if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
-               executor.shutdownNow();
            }
+       latchStep5.await();
+       System.out.println(events);
+       System.out.println(customers);
+
+       executor.shutdown();
+       if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
+           executor.shutdownNow();
        }
    }
 

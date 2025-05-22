@@ -3,16 +3,18 @@ package Utility;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 import Utility.PrimeNumberGenerator;
 
 public class ParallelPrimeNumberGenerator extends Thread {
 
     private int l,r;
-    private List<Integer> preGeneratedIds;
-    private Set<Integer> ids;
+    private final List<Integer> preGeneratedIds;
+    private ConcurrentLinkedQueue<Integer> ids;
 
-    public ParallelPrimeNumberGenerator(int l, int r, Set<Integer> ids, List<Integer> preGeneratedIds) {
+    public ParallelPrimeNumberGenerator(int l, int r, ConcurrentLinkedQueue<Integer> ids, List<Integer> preGeneratedIds) {
         this.l = l;
         this.r = r;
         this.ids = ids;
@@ -22,15 +24,19 @@ public class ParallelPrimeNumberGenerator extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < 20000; i++) {
-            int randomNumber = (int) (Math.random() * (r - l + 1)) + l;
-            if (PrimeNumberGenerator.isPrim(randomNumber)) {
+            int randomNumber = ThreadLocalRandom.current().nextInt(l, r + 1);
+            if (!PrimeNumberGenerator.isPrim(randomNumber)) {
                 continue;
             }
             if (preGeneratedIds.size() > 1000 && ids.contains(randomNumber) && preGeneratedIds.contains(randomNumber)) {
                 break;
             }
 
-            preGeneratedIds.add(randomNumber);
+            synchronized (preGeneratedIds) {
+                if (!preGeneratedIds.contains(randomNumber)) {
+                    preGeneratedIds.add(randomNumber);
+                }
+            }
 
         }
     }

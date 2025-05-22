@@ -56,8 +56,15 @@ public class Client {
                     break;
                 }
                 case "5": {
-                    performanceClientParallel.stressTest();
-                    break;
+                    try{
+                        performanceClientParallel.stressTest();
+                    }
+                    catch (Exception E) {
+                        E.printStackTrace();
+                    }
+                    finally{
+                        break;
+                    }
                 }
 
                 case "6": {

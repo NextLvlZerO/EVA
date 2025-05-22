@@ -5,6 +5,7 @@ import Models.Customer;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomerService implements Interfaces.CustomerServiceInterface{
 
@@ -13,7 +14,7 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
 
     public CustomerService() {
         idService = new IDServiceParallel();
-        customers = new HashMap<Integer, Customer>();
+        customers = new ConcurrentHashMap<>();
     }
 
     @Override

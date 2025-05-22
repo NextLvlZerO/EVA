@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EventService implements Interfaces.EventServiceInterface{
     private Map<Integer, Event> events;
     private IDServiceParallel idserviceParallel;
 
     public EventService() {
-        events = new HashMap<>();
+        events = new ConcurrentHashMap<>();
         idserviceParallel = new IDServiceParallel();
         try {
             idserviceParallel.addId();

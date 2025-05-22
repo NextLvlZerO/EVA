@@ -11,7 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class PerformanceClientParallel {
 
@@ -19,15 +21,139 @@ public class PerformanceClientParallel {
     EventServiceInterface eventService;
     CustomerServiceInterface customerService;
     TicketServiceInterface ticketService;
+    private final ExecutorService executor;
 
     public PerformanceClientParallel(TicketShop ticketShop) {
         this.ticketShop = ticketShop;
         this.eventService = ticketShop.getEventService();
         this.customerService = ticketShop.getCustomerService();
         this.ticketService = ticketShop.getTicketService();
+        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
-    public void stressTest() {
+
+   public void stressTest() throws InterruptedException {
+
+       final int startTime = (int) System.currentTimeMillis();
+
+       CountDownLatch latchStep1 = new CountDownLatch(100);
+       CountDownLatch latchStep2 = new CountDownLatch(1000);
+
+       long startTime1 = System.currentTimeMillis();
+
+       for (int i = 1; i <= 100; i++) {
+           final int idx = i;
+           executor.submit(() -> {
+               try {
+                   eventService.createEvent(
+                           "foo " + idx,
+                           "foo " + idx,
+                           LocalDateTime.now().plusDays(idx),
+                           100000
+                   );
+               } catch (Exception e) {
+                   e.printStackTrace();
+               } finally {
+                   latchStep1.countDown();
+               }
+           });
+       }
+
+       for (int i = 0; i < 1000; i++) {
+           final int idx = i;
+           executor.submit(() -> {
+               try {
+                   customerService.createCustomer("Oskar suxx", "foo@web.de", LocalDate.of(2002, 10, 10));
+               } catch (Exception E) {
+                   E.printStackTrace();
+               } finally {
+                   latchStep2.countDown();
+               }
+           });
+       }
+
+       latchStep1.await();
+       latchStep2.await();
+
+       List<Event> events = eventService.getAllEvents();
+       List<Customer> customers = customerService.getAllCustomer();
+
+
+       CountDownLatch latchStep3 = new CountDownLatch(events.size() * customers.size());
+
+       for (Event e : events) {
+           for (Customer c : customers) {
+               executor.submit(() -> {
+                   try {
+                       ticketService.createTicket(c.getId(), e.getId());
+                   } catch (Exception E) {
+                       E.printStackTrace();
+                   } finally {
+                       latchStep3.countDown();
+                   }
+               });
+           }
+       }
+       latchStep3.await();
+       int endTime = (int) System.currentTimeMillis();
+       System.out.println("Time: " + (endTime - startTime) + "ms");
+
+       System.out.println("Finished test");
+
+
+       List<Event> secondEvents = new ArrayList<>();
+       CountDownLatch latchStep4 = new CountDownLatch(100);
+       for (int i = 101; i <= 200; i++) {
+           final int idx = i;
+           executor.submit(() -> {
+               try {
+                   secondEvents.add(eventService.createEvent(
+                           "Event " + idx,
+                           "Location " + idx,
+                           LocalDateTime.now().plusDays(idx),
+                           1000000
+                   ));
+               } catch (Exception e) {
+                   e.printStackTrace();
+               } finally {
+                   latchStep4.countDown();
+               }
+           });
+       }
+       latchStep4.await();
+
+
+
+
+       CountDownLatch latchStep5 = new CountDownLatch(secondEvents.size() * customers.size() * 2);
+       for (Event e : secondEvents) {
+           for (Customer c : customers) {
+               executor.submit(() -> {
+                   try {
+                       ticketService.createTicket(c.getId(), e.getId());
+                       ticketService.createTicket(c.getId(), e.getId());
+                   } catch (Exception ex) {
+                       ex.printStackTrace();
+                   } finally {
+                       latchStep5.countDown();
+                       latchStep5.countDown();
+                   }
+               });
+           }
+           latchStep5.await();
+
+           executor.shutdown();
+           if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
+               executor.shutdownNow();
+           }
+       }
+   }
+
+
+
+
+
+    public void oldTest() {
         int startTime = (int) System.currentTimeMillis();
         System.out.println("Test");
 
@@ -54,6 +180,12 @@ public class PerformanceClientParallel {
             }
         }
 
+        int temp = 0;
+        for (Event event : eventService.getAllEvents()) {
+            temp ++;
+        }
+        System.out.println(temp);
+
         for (int i = 0; i < 1000; i++) {
             try {
                 customerService.createCustomer("Oskar suxx", "foo@web.de", LocalDate.of(2002, 10, 10));
@@ -75,7 +207,30 @@ public class PerformanceClientParallel {
 
         }
 
-        List<Event> events2 = new ArrayList<>();
+        List<Event> events2 = Collections.synchronizedList(new ArrayList<>());
+
+        List<Thread> threads2 = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            Thread t = new Thread(() -> {
+                try {
+                    events2.add(eventService.createEvent("test", "fooo", LocalDateTime.of(LocalDate.of(2026,10,10), LocalTime.of(10,10)),2000));
+                }
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+            threads2.add(t);
+            t.start();
+        }
+
+        for (Thread t : threads2) {
+            try{
+                t.join();
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
 
         /*for (int i = 0; i < 100; i++) {
             try {
@@ -85,7 +240,7 @@ public class PerformanceClientParallel {
             }
         }*/
 
-        for (Customer c : customerService.getAllCustomer()) {
+/*        for (Customer c : customerService.getAllCustomer()) {
             for (Event e : events2) {
                 try {
                     ticketService.createTicket(c.getId(),e.getId());
@@ -95,7 +250,40 @@ public class PerformanceClientParallel {
                 }
 
             }
+        }*/
+
+        List<Thread> threads3 = new ArrayList<>();
+        for (Event e : events2) {
+            for (Customer c : customerService.getAllCustomer()) {
+
+               final Event currentEvent = e;
+               final Customer currentCustomer = c;
+
+               Thread t = new Thread(() -> {
+                   try {
+                       System.out.println(currentEvent.getId());
+                       System.out.println(currentCustomer.getId());
+                      ticketService.createTicket(currentEvent.getId(), currentCustomer.getId());
+                   }
+                   catch (Exception E){
+                       System.out.println(E.getMessage());
+                   }
+               });
+               threads3.add(t);
+               t.start();
+
+            }
         }
+
+        for (Thread t : threads3) {
+            try{
+                t.join();
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+
 
         int endTime = (int) System.currentTimeMillis();
         System.out.println("Time: " + (endTime - startTime) + "ms");

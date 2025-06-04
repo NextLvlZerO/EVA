@@ -14,7 +14,7 @@ public class IDService {
 
     public int addId() {
         int newId = PrimeNumberGenerator.getPrimeNumber(1000000000,2000000000);
-        int limit = 20000;
+        int limit = 200000;
         while ((ids.contains(newId) || newId == -1) && limit > 0) {
             newId = PrimeNumberGenerator.getPrimeNumber(1000000000, 2000000000);
             limit--;

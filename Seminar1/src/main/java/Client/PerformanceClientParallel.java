@@ -74,6 +74,7 @@ public class PerformanceClientParallel {
        List<Event> events = new ArrayList<>(eventService.getAllEvents());
        List<Customer> customers = new ArrayList<>(customerService.getAllCustomer());
 
+       System.out.println(events);
 
        CountDownLatch latchStep3 = new CountDownLatch(events.size() * customers.size());
 
@@ -81,10 +82,12 @@ public class PerformanceClientParallel {
            for (int j = 0; j < customers.size(); j++) {
                final Event currentEvent = events.get(i);
                final Customer currentCustomer = customers.get(j);
+               System.out.println(currentEvent);
+               System.out.println(currentCustomer);
 
                executor.submit(() -> {
                    try {
-                      ticketService.createTicket(currentCustomer.getId(), currentEvent.getId());
+                      ticketService.createTicket(currentCustomer, currentEvent);
                    } catch (Exception E) {
                        System.out.println("Latch3:");
                        E.printStackTrace();
@@ -95,12 +98,8 @@ public class PerformanceClientParallel {
            }
        }
        latchStep3.await();
-       int endTime = (int) System.currentTimeMillis();
-       System.out.println("Time: " + (endTime - startTime) + "ms");
-       System.out.println("Finished test");
 
 
-       List<Event> secondEvents = new ArrayList<>();
        CountDownLatch latchStep4 = new CountDownLatch(100);
        for (int i = 101; i <= 200; i++) {
            final int idx = i;
@@ -121,7 +120,7 @@ public class PerformanceClientParallel {
        }
        latchStep4.await();
 
-       secondEvents = eventService.getAllEvents().subList(events.size(), events.size() + 100);
+       List<Event> secondEvents = eventService.getAllEvents().subList(events.size(), eventService.getAllEvents().size());
 
 
        System.out.println("step 4 finished");
@@ -136,8 +135,8 @@ public class PerformanceClientParallel {
 
                executor.submit(() -> {
                    try {
-                       ticketService.createTicket(currentCustomer.getId(), currentEvent.getId());
-                       ticketService.createTicket(currentCustomer.getId(), currentEvent.getId());
+                       ticketService.createTicket(currentCustomer, currentEvent);
+                       ticketService.createTicket(currentCustomer, currentEvent);
                    } catch (Exception ex) {
                        ex.printStackTrace();
                    } finally {
@@ -148,8 +147,10 @@ public class PerformanceClientParallel {
            }
            }
        latchStep5.await();
-       System.out.println(events);
-       System.out.println(customers);
+
+       int endTime = (int) System.currentTimeMillis();
+       System.out.println("Time: " + (endTime - startTime) + "ms");
+       System.out.println("Finished test");
 
        executor.shutdown();
        if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {

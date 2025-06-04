@@ -10,13 +10,13 @@ import java.util.List;
 
 public class TicketService implements Interfaces.TicketServiceInterface{
 
-    IDServiceParallel idService;
+    IDService idService;
     List<Ticket> tickets;
     CustomerService customerService;
     EventService eventService;
 
    public TicketService(CustomerService customerService, EventService eventService) {
-       idService = new IDServiceParallel();
+       idService = new IDService();
        tickets = new ArrayList<>();
        this.customerService = customerService;
        this.eventService = eventService;
@@ -48,6 +48,23 @@ public class TicketService implements Interfaces.TicketServiceInterface{
        event.addTicket(ticket);
        customer.addTicket(ticket);
    }
+
+    @Override
+    public void createTicket(Customer customer,Event event) throws Exception {
+
+        if (customer == null || event == null) throw new IllegalArgumentException("Customer or Event not found");
+
+        LocalDate date = LocalDate.now();
+        if (event.getTickets() <= 0){
+            throw new IllegalArgumentException("No tickets left");
+        }
+        event.setTickets(event.getTickets() - 1);
+        int id = idService.addId();
+
+        Ticket ticket = new Ticket(id, date, customer, event);
+        event.addTicket(ticket);
+        customer.addTicket(ticket);
+    }
 
    @Override
    public boolean validateTicket(int ticketId, int customerId, int eventId) {

@@ -2,6 +2,7 @@ package Models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -19,7 +20,7 @@ public class Event {
         this.ort = ort;
         this.datum = datum;
         this.tickets = new AtomicInteger(tickets);
-        this.ticketList = new ArrayList<>();
+        this.ticketList = Collections.synchronizedList( new ArrayList<>());
     }
 
     public int getId() {

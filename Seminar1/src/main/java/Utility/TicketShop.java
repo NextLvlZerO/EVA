@@ -9,6 +9,7 @@ import Services.EventService;
 import Services.LogService;
 import Services.TicketService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -62,11 +63,37 @@ public class TicketShop {
                 cónvertStringEvent(method, params);
                 break;
             case CUSTOMER:
+                convertStringCustomer(method, params);
                 break;
             case TICKET:
                 break;
             default:
 
+        }
+    }
+
+    private void convertStringCustomer(String sMethod, String[] params) {
+        method eMethod = method.valueOf(sMethod.toUpperCase());
+        switch (eMethod) {
+            case CREATE:
+                try {
+                    if (params.length != 3) {
+                        throw new IllegalArgumentException("Wrong number of parameters");
+                    }
+                    String username = params[0];
+                    String email = params[1];
+                    LocalDate birthday = LocalDate.parse(params[2]);
+                    customerService.createCustomer(username, email, birthday);
+                } catch (Exception e) {
+                    logService.error(e.getMessage());
+                }
+                break;
+            case UPDATE:
+                break;
+            case DELETE:
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong method");
         }
     }
 

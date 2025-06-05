@@ -1,5 +1,6 @@
 package Services;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,11 +20,13 @@ public class LogService implements Interfaces.LogServiceInterface {
 
     public LogService() {
 
-        this.logFilePath = "C:\\Users\\julch\\Documents\\Git\\EVA_lars\\EVA\\Seminar1\\src\\main\\java\\Logs";
+        this.logFilePath = "Seminar1/src/main/java/Logs/logs.txt";
+        File logFile = new File(this.logFilePath);
+
 
 
         try {
-            writer = new PrintWriter(new FileWriter(logFilePath, true));
+            writer = new PrintWriter(new FileWriter(logFile, true));
         } catch (IOException e) {
             System.err.println("Konnte Log-Datei nicht öffnen: " + e.getMessage());
             writer = null;
@@ -36,13 +39,13 @@ public class LogService implements Interfaces.LogServiceInterface {
         String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String formattedMessage = String.format("[%s] [%s] %s;", timeStamp, level, message);
 
-        // In Konsole schreiben
-        System.out.println(formattedMessage);
 
         // Optional in Datei schreiben
         if (writer != null) {
             writer.println(formattedMessage);
             writer.flush();
+        } else {
+            System.err.println("no writer");
         }
     }
 

@@ -64,11 +64,37 @@ public class TicketShop {
             case CUSTOMER:
                 break;
             case TICKET:
+                convertStringTicket(method, params);
                 break;
             default:
 
         }
     }
+
+    private void convertStringTicket(String sMethod, String[] params) {
+        method eMethod = method.valueOf(sMethod.toUpperCase());
+        switch (eMethod) {
+            case CREATE:
+                try {
+                    if (params.length != 2) {
+                        throw new IllegalArgumentException("Wrong number of parameters");
+                    }
+                    int customerId = Integer.parseInt(params[0]);
+                    int ticketId = Integer.parseInt(params[1]);
+                    ticketService.createTicket(customerId, ticketId);
+                } catch (Exception e) {
+                    logService.error(e.getMessage());
+                }
+                break;
+            case UPDATE:
+                break;
+            case DELETE:
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong method");
+        }
+    }
+
 
     private void cónvertStringEvent(String sMethod, String[] params) {
         method eMethod = method.valueOf(sMethod.toUpperCase());

@@ -3,7 +3,7 @@ package Client;
 import Interfaces.CustomerServiceInterface;
 import Interfaces.EventServiceInterface;
 import Interfaces.TicketServiceInterface;
-import Main.TicketShop;
+import Utility.TicketShop;
 import Models.Customer;
 import Models.Event;
 

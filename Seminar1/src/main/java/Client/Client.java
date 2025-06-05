@@ -1,6 +1,6 @@
 package Client;
 
-import Main.TicketShop;
+import Utility.TicketShop;
 
 import java.util.Scanner;
 
@@ -16,9 +16,9 @@ public class Client {
 
     public Client() {
         this.ticketshop = new TicketShop();
-        this.eventClient = new EventClient(ticketshop.getEventService());
-        this.customerClient = new CustomerClient(ticketshop.getCustomerService());
-        this.ticketClient = new TicketClient(ticketshop.getEventService(), ticketshop.getCustomerService(), ticketshop.getTicketService());
+        this.eventClient = new EventClient(ticketshop.getEventService(), ticketshop.getLogService());
+        this.customerClient = new CustomerClient(ticketshop.getCustomerService(), ticketshop.getLogService());
+        this.ticketClient = new TicketClient(ticketshop.getEventService(), ticketshop.getCustomerService(), ticketshop.getTicketService(), ticketshop.getLogService());
         this.performanceClient = new PerformanceClient(ticketshop);
         this.performanceClientParallel = new PerformanceClientParallel(ticketshop);
     }

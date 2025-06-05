@@ -1,6 +1,7 @@
 package Client;
 
 import Interfaces.EventServiceInterface;
+import Interfaces.LogServiceInterface;
 import Models.Event;
 import Services.EventService;
 import Exceptions.InvalidDateException;
@@ -12,9 +13,11 @@ import java.util.Scanner;
 public class EventClient {
 
     EventServiceInterface eventService;
+    LogServiceInterface logService;
 
-    public EventClient(EventServiceInterface eventService) {
+    public EventClient(EventServiceInterface eventService, LogServiceInterface logService) {
         this.eventService = eventService;
+        this.logService = logService;
     }
 
     public void eventManagement(Scanner scanner) {

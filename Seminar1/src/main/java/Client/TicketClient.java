@@ -2,6 +2,7 @@ package Client;
 
 import Interfaces.CustomerServiceInterface;
 import Interfaces.EventServiceInterface;
+import Interfaces.LogServiceInterface;
 import Interfaces.TicketServiceInterface;
 import Models.Ticket;
 import Services.CustomerService;
@@ -16,8 +17,10 @@ public class TicketClient {
     TicketServiceInterface ticketService;
     CustomerServiceInterface customerService;
     EventServiceInterface eventService;
+    LogServiceInterface logService;
 
-    public TicketClient(EventServiceInterface eventService, CustomerServiceInterface customerService, TicketServiceInterface ticketService) {
+    public TicketClient(EventServiceInterface eventService, CustomerServiceInterface customerService, TicketServiceInterface ticketService, LogServiceInterface logService) {
+        this.logService = logService;
         this.ticketService = ticketService;
         this.customerService = customerService;
         this.eventService = eventService;

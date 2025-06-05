@@ -1,7 +1,9 @@
 package Client;
 
 import Interfaces.CustomerServiceInterface;
+import Interfaces.LogServiceInterface;
 import Services.CustomerService;
+import Services.LogService;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -9,9 +11,11 @@ import java.util.Scanner;
 public class CustomerClient {
 
     CustomerServiceInterface customerService;
+    LogServiceInterface logService;
 
-    public CustomerClient(CustomerServiceInterface customerService) {
+    public CustomerClient(CustomerServiceInterface customerService , LogServiceInterface logService) {
         this.customerService = customerService;
+        this.logService = logService;
     }
 
     public void customerManagement(Scanner scanner){

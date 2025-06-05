@@ -2,8 +2,9 @@ package Client;
 
 import Interfaces.CustomerServiceInterface;
 import Interfaces.EventServiceInterface;
+import Interfaces.LogServiceInterface;
 import Interfaces.TicketServiceInterface;
-import Main.TicketShop;
+import Utility.TicketShop;
 import Models.Customer;
 import Models.Event;
 
@@ -21,6 +22,7 @@ public class PerformanceClientParallel {
     EventServiceInterface eventService;
     CustomerServiceInterface customerService;
     TicketServiceInterface ticketService;
+    LogServiceInterface logService;
     private final ExecutorService executor;
 
     public PerformanceClientParallel(TicketShop ticketShop) {
@@ -28,6 +30,7 @@ public class PerformanceClientParallel {
         this.eventService = ticketShop.getEventService();
         this.customerService = ticketShop.getCustomerService();
         this.ticketService = ticketShop.getTicketService();
+        this.logService = ticketShop.getLogService();
         this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
@@ -42,14 +45,15 @@ public class PerformanceClientParallel {
            final int idx = i;
            executor.submit(() -> {
                try {
-                   eventService.createEvent(
+                   Event event = eventService.createEvent(
                            "foo " + idx,
                            "foo " + idx,
                            LocalDateTime.now().plusDays(idx),
                            100000
                    );
+                   logService.info("Event created " + event);
                } catch (Exception e) {
-                   e.printStackTrace();
+                   logService.error(e.getMessage());
                } finally {
                    latchStep1.countDown();
                }
@@ -59,7 +63,7 @@ public class PerformanceClientParallel {
        for (int i = 0; i < 1000; i++) {
            executor.submit(() -> {
                try {
-                   customerService.createCustomer("Oskar suxx", "foo@web.de", LocalDate.of(2002, 10, 10));
+                   Customer c = customerService.createCustomer("Oskar suxx", "foo@web.de", LocalDate.of(2002, 10, 10));
                } catch (Exception E) {
                    E.printStackTrace();
                } finally {

@@ -7,9 +7,9 @@ import Models.Ticket;
 import java.util.List;
 
 public interface TicketServiceInterface {
-    void createTicket(int customerId, int eventId) throws Exception;
+    Ticket createTicket(int customerId, int eventId) throws Exception;
 
-    void createTicket(Customer customer, Event event) throws Exception;
+    Ticket createTicket(Customer customer, Event event) throws Exception;
 
     boolean validateTicket(int ticketId, int customerId, int eventId);
 

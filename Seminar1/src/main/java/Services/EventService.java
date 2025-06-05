@@ -36,19 +36,17 @@ public class EventService implements Interfaces.EventServiceInterface{
             throw new InvalidDateException("ticket must be in future");
         }
 
+        Event currentEvent = null;
         try {
             int id = idserviceParallel.addId();
-            Event currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
+            currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
             events.put(currentEvent.getId(), currentEvent);
             System.out.println("Event successfully created, id: " + id);
             return currentEvent;
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-        return null;
-
-
+        return currentEvent;
     }
 
     @Override

@@ -30,7 +30,7 @@ public class TicketService implements Interfaces.TicketServiceInterface{
    }
 
    @Override
-   public void createTicket(int customerId, int eventId) throws Exception {
+   public Ticket createTicket(int customerId, int eventId) throws Exception {
 
        Customer customer = customerService.getCustomer(customerId);
        Event event = eventService.getEvent(eventId);
@@ -47,10 +47,11 @@ public class TicketService implements Interfaces.TicketServiceInterface{
        Ticket ticket = new Ticket(id, date, customer, event);
        event.addTicket(ticket);
        customer.addTicket(ticket);
+       return ticket;
    }
 
     @Override
-    public void createTicket(Customer customer,Event event) throws Exception {
+    public Ticket createTicket(Customer customer,Event event) throws Exception {
 
         if (customer == null || event == null) throw new IllegalArgumentException("Customer or Event not found");
 
@@ -64,6 +65,7 @@ public class TicketService implements Interfaces.TicketServiceInterface{
         Ticket ticket = new Ticket(id, date, customer, event);
         event.addTicket(ticket);
         customer.addTicket(ticket);
+        return ticket;
     }
 
    @Override

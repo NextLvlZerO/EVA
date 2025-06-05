@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CustomerServiceInterface {
-    void createCustomer(String username, String email, LocalDate birthday) throws IllegalArgumentException;
+    Customer createCustomer(String username, String email, LocalDate birthday) throws IllegalArgumentException;
 
     void deleteCustomer(int id) throws IllegalArgumentException;
 

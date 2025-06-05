@@ -1,9 +1,9 @@
 package Utility;
 
-import Interfaces.CustomerServiceInterface;
-import Interfaces.EventServiceInterface;
-import Interfaces.LogServiceInterface;
-import Interfaces.TicketServiceInterface;
+import Interfaces.*;
+import Models.Customer;
+import Models.Event;
+import Models.Ticket;
 import Services.CustomerService;
 import Services.EventService;
 import Services.LogService;
@@ -51,7 +51,7 @@ public class TicketShop {
 
     public LogServiceInterface getLogService() { return logService; }
 
-    public void convertString(String input) {
+    public TypeInterface callMethodFromString(String input) {
         String[] tokens = input.split(",");
         tokens = Arrays.stream(tokens).map(String::trim).toArray(String[]::new);
         String sType = tokens[0].toUpperCase();
@@ -60,20 +60,18 @@ public class TicketShop {
         type eType = type.valueOf(sType);
         switch (eType) {
             case EVENT:
-                cónvertStringEvent(method, params);
-                break;
+                return convertStringEvent(method, params);
             case CUSTOMER:
-                convertStringCustomer(method, params);
-                break;
+                return convertStringCustomer(method, params);
             case TICKET:
-                convertStringTicket(method, params);
-                break;
+                return convertStringTicket(method, params);
             default:
+                return null;
 
         }
     }
 
-    private void convertStringTicket(String sMethod, String[] params) {
+    private Ticket convertStringTicket(String sMethod, String[] params) {
         method eMethod = method.valueOf(sMethod.toUpperCase());
         switch (eMethod) {
             case CREATE:
@@ -83,21 +81,23 @@ public class TicketShop {
                     }
                     int customerId = Integer.parseInt(params[0]);
                     int ticketId = Integer.parseInt(params[1]);
-                    ticketService.createTicket(customerId, ticketId);
+                    return ticketService.createTicket(customerId, ticketId);
                 } catch (Exception e) {
                     logService.error(e.getMessage());
+                    throw new IllegalArgumentException("Error creating ticket: " + e.getMessage());
                 }
-                break;
             case UPDATE:
-                break;
+                return null;
             case DELETE:
-                break;
+                return null;
             default:
+                throw new IllegalArgumentException("Wrong method");
 
         }
+
     }
 
-    private void convertStringCustomer(String sMethod, String[] params) {
+    private Customer convertStringCustomer(String sMethod, String[] params) {
         method eMethod = method.valueOf(sMethod.toUpperCase());
         switch (eMethod) {
             case CREATE:
@@ -108,22 +108,22 @@ public class TicketShop {
                     String username = params[0];
                     String email = params[1];
                     LocalDate birthday = LocalDate.parse(params[2]);
-                    customerService.createCustomer(username, email, birthday);
+                    return customerService.createCustomer(username, email, birthday);
                 } catch (Exception e) {
                     logService.error(e.getMessage());
+                    throw new IllegalArgumentException("Error creating customer: " + e.getMessage());
                 }
-                break;
             case UPDATE:
-                break;
+                return null;
             case DELETE:
-                break;
+                return null;
             default:
                 throw new IllegalArgumentException("Wrong method");
         }
     }
 
 
-    private void cónvertStringEvent(String sMethod, String[] params) {
+    private Event convertStringEvent(String sMethod, String[] params) {
         method eMethod = method.valueOf(sMethod.toUpperCase());
         switch (eMethod) {
             case CREATE:
@@ -135,15 +135,15 @@ public class TicketShop {
                     String ort = params[1];
                     LocalDateTime date = LocalDateTime.parse(params[2]);
                     int tickets = Integer.parseInt(params[3]);
-                    eventService.createEvent(bezeichnung, ort, date, tickets);
+                    return eventService.createEvent(bezeichnung, ort, date, tickets);
                 } catch (Exception e) {
                     logService.error(e.getMessage());
+                    throw new IllegalArgumentException("Error creating event: " + e.getMessage());
                 }
-                break;
             case UPDATE:
-                break;
+                return null;
             case DELETE:
-                break;
+                return null;
             default:
                 throw new IllegalArgumentException("Wrong method");
         }

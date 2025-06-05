@@ -11,7 +11,6 @@ public class LogService {
         B("Type B"),
         C("Type C");
 
-
         private final String label;
 
         Type(String label) {
@@ -24,21 +23,19 @@ public class LogService {
     }
 
     private final IDService idService;
-    public List<String> logs = new ArrayList<>();
-
+    public List<String> logs;
 
     public LogService() {
         this.idService = new IDService();
+        this.logs = new ArrayList<>();
     }
 
-    public addLog(long eventId, String name) {
+    public String addLog(long eventId, String name) {
         LocalDateTime time = LocalDateTime.now();
         long currentId = idService.addId();
-
          String resultLog = time + "|" + eventId + "|" + name;
-         logs.
-
-
+         logs.add(resultLog);
+         return resultLog;
     }
 
 }

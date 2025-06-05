@@ -18,7 +18,7 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
     }
 
     @Override
-    public void createCustomer(String username, String email, LocalDate birthday) throws IllegalArgumentException {
+    public Customer createCustomer(String username, String email, LocalDate birthday) throws IllegalArgumentException {
 
         if (LocalDate.now().minusYears(18).minusDays(1).isBefore(birthday)) {
             throw new IllegalArgumentException("Customer has to be at least 18 years old");
@@ -28,16 +28,15 @@ public class CustomerService implements Interfaces.CustomerServiceInterface{
         }
 
 
+        Customer customer = null;
         try{
-            Customer customer = new Customer(idService.addId(), username, email, birthday);
+            customer = new Customer(idService.addId(), username, email, birthday);
             customers.put(customer.getId(),customer);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-
-
+        return customer;
     }
 
     @Override

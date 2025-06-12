@@ -1,8 +1,10 @@
 package Models;
 
+import Interfaces.TypeInterface;
+
 import java.time.LocalDate;
 
-public class Ticket {
+public class Ticket implements TypeInterface {
     private int id;
     private LocalDate date;
     private Customer customer;

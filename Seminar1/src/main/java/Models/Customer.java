@@ -1,10 +1,12 @@
 package Models;
 
+import Interfaces.TypeInterface;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+public class Customer implements TypeInterface {
 
     private int id;
     private String username;

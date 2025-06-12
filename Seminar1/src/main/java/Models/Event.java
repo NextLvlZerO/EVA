@@ -1,12 +1,14 @@
 package Models;
 
+import Interfaces.TypeInterface;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Event {
+public class Event implements TypeInterface {
     private int id;
     private String bezeichnung;
     private String ort;

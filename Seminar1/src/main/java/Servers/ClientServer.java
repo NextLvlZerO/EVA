@@ -13,13 +13,13 @@ public class ClientServer {
              BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            String message = "EVENT,CREATE,Foo,MoreFoo,2025-08-12T19:30";
+            String message = "EVENT,CREATE,Foo,MoreFoo,2025-08-12T19:30,400";
 
             out.write(message + "\n");
             out.flush();
 
             String response = in.readLine();
-            System.out.println("Antwort vom Server: " + response);
+            System.out.println("Response: " + response);
         } catch (IOException e) {
             e.printStackTrace();
         }

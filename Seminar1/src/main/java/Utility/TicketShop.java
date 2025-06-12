@@ -51,13 +51,15 @@ public class TicketShop {
 
     public LogServiceInterface getLogService() { return logService; }
 
-    public void convertString(String input) {
+    public void convertString(String input) throws Exception{
         String[] tokens = input.split(",");
         tokens = Arrays.stream(tokens).map(String::trim).toArray(String[]::new);
         String sType = tokens[0].toUpperCase();
         String method = tokens[1];
         String[] params = Arrays.copyOfRange(tokens, 2, tokens.length);
         type eType = type.valueOf(sType);
+        try{
+
         switch (eType) {
             case EVENT:
                 cónvertStringEvent(method, params);
@@ -69,7 +71,11 @@ public class TicketShop {
                 convertStringTicket(method, params);
                 break;
             default:
+        }
 
+        }
+        catch(Exception e){
+            throw new Exception(e.getMessage());
         }
     }
 
@@ -123,7 +129,7 @@ public class TicketShop {
     }
 
 
-    private void cónvertStringEvent(String sMethod, String[] params) {
+    private void cónvertStringEvent(String sMethod, String[] params) throws Exception {
         method eMethod = method.valueOf(sMethod.toUpperCase());
         switch (eMethod) {
             case CREATE:
@@ -137,7 +143,7 @@ public class TicketShop {
                     int tickets = Integer.parseInt(params[3]);
                     eventService.createEvent(bezeichnung, ort, date, tickets);
                 } catch (Exception e) {
-                    logService.error(e.getMessage());
+                    throw new Exception(e.getMessage());
                 }
                 break;
             case UPDATE:

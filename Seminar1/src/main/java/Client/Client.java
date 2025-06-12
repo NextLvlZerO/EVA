@@ -1,5 +1,6 @@
 package Client;
 
+import Servers.TicketshopServer;
 import Utility.TicketShop;
 
 import java.util.Scanner;

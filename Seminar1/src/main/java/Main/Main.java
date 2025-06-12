@@ -1,16 +1,17 @@
 package Main;
 
 import Client.Client;
+import Utility.TicketShop;
 
 public class Main {
 
     public static void main(String[] args){
         try{
-            Client eventClient = new Client();
-            eventClient.run();
+            Client client = new Client();
+            client.run();
         }
         catch(Exception e){
-           System.out.println("Error:" + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

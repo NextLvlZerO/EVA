@@ -2,6 +2,7 @@ package Client;
 
 import Servers.TicketshopServer;
 import Utility.TicketShop;
+import Utility.TicketShopTCP;
 
 import java.util.Scanner;
 
@@ -13,19 +14,27 @@ public class Client {
     private final TicketClient ticketClient;
     private final PerformanceClient performanceClient;
     private final PerformanceClientParallel performanceClientParallel;
+    private final TicketShopTCP ticketShopTCP;
 
 
     public Client() {
+        this.ticketShopTCP = new TicketShopTCP();
         this.ticketshop = new TicketShop();
         this.eventClient = new EventClient(ticketshop.getEventService(), ticketshop.getLogService());
         this.customerClient = new CustomerClient(ticketshop.getCustomerService(), ticketshop.getLogService());
         this.ticketClient = new TicketClient(ticketshop.getEventService(), ticketshop.getCustomerService(), ticketshop.getTicketService(), ticketshop.getLogService());
-        this.performanceClient = new PerformanceClient(ticketshop);
+        this.performanceClient = new PerformanceClient(ticketshop, ticketShopTCP);
         this.performanceClientParallel = new PerformanceClientParallel(ticketshop);
     }
 
     public void run(){
         Scanner scanner = new Scanner(System.in);
+
+        TicketshopServer ticketShopServer = new TicketshopServer(ticketshop);
+        Thread serverThread = new Thread(ticketShopServer);
+        serverThread.setDaemon(true); // optional: beenden, wenn Hauptprogramm beendet wird
+        serverThread.start();
+
         outer: while(true){
 
             System.out.println("-----------------");

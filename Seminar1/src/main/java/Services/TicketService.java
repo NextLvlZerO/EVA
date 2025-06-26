@@ -1,5 +1,7 @@
 package Services;
 
+import Interfaces.CustomerServiceInterface;
+import Interfaces.EventServiceInterface;
 import Models.Customer;
 import Models.Event;
 import Models.Ticket;
@@ -12,10 +14,10 @@ public class TicketService implements Interfaces.TicketServiceInterface{
 
     IDService idService;
     List<Ticket> tickets;
-    CustomerService customerService;
-    EventService eventService;
+    CustomerServiceInterface customerService;
+    EventServiceInterface eventService;
 
-   public TicketService(CustomerService customerService, EventService eventService) {
+   public TicketService(CustomerService customerService, EventServiceInterface eventService) {
        idService = new IDService();
        tickets = new ArrayList<>();
        this.customerService = customerService;

@@ -3,6 +3,7 @@ package Client;
 import Interfaces.CustomerServiceInterface;
 import Interfaces.EventServiceInterface;
 import Interfaces.TicketServiceInterface;
+import Interfaces.TicketShopInterface;
 import Utility.TicketShop;
 import Models.Customer;
 import Models.Event;
@@ -15,16 +16,18 @@ import java.util.List;
 
 public class PerformanceClient {
 
-    TicketShop ticketShop;
+    TicketShopInterface ticketShop;
+    TicketShopInterface ticketShopTCP;
     EventServiceInterface eventService;
     CustomerServiceInterface customerService;
     TicketServiceInterface ticketService;
 
-    public PerformanceClient(TicketShop ticketShop) {
+    public PerformanceClient(TicketShopInterface ticketShop, TicketShopInterface ticketShopTCP) {
         this.ticketShop = ticketShop;
-        this.eventService = ticketShop.getEventService();
-        this.customerService = ticketShop.getCustomerService();
-        this.ticketService = ticketShop.getTicketService();
+        this.ticketShopTCP = ticketShopTCP;
+        this.eventService = ticketShopTCP.getEventService();
+        this.customerService = ticketShopTCP.getCustomerService();
+        this.ticketService = ticketShopTCP.getTicketService();
     }
 
     public void stressTest() {
@@ -47,8 +50,8 @@ public class PerformanceClient {
             }
         }
 
-        for (Customer c : customerService.getAllCustomer()) {
-            for (Event e : eventService.getAllEvents()) {
+        for (Customer c : ticketShop.getCustomerService().getAllCustomer()) {
+            for (Event e : ticketShop.getEventService().getAllEvents()) {
                 try {
                     ticketService.createTicket(c.getId(),e.getId());
                     System.out.println("created Ticket");
@@ -70,7 +73,7 @@ public class PerformanceClient {
             }
         }
 
-        for (Customer c : customerService.getAllCustomer()) {
+        for (Customer c : ticketShop.getCustomerService().getAllCustomer()) {
             for (Event e : events2) {
                 try {
                     ticketService.createTicket(c.getId(),e.getId());

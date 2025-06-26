@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class TicketShop {
+public class TicketShop implements TicketShopInterface {
 
 
     private final EventService eventService;
@@ -34,7 +34,6 @@ public class TicketShop {
         this.customerService = new CustomerService();
         this.ticketService = new TicketService(customerService, eventService);
         this.logService = new LogService();
-
     }
 
     public TicketServiceInterface getTicketService() {

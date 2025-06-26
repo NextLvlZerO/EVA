@@ -1,24 +1,22 @@
 package Services;
 
-import Client.Client;
-import Models.Event;
 import Exceptions.InvalidDateException;
 import Exceptions.NegativeNumberException;
+import Models.Event;
 import Servers.ClientServer;
 
-import javax.swing.table.TableRowSorter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EventService implements Interfaces.EventServiceInterface{
+public class EventServiceTCP implements Interfaces.EventServiceInterface{
+
     private Map<Integer, Event> events;
     private IDServiceParallel idserviceParallel;
 
-    public EventService() {
+    public EventServiceTCP() {
         events = new ConcurrentHashMap<>();
         idserviceParallel = new IDServiceParallel();
         try {
@@ -29,6 +27,7 @@ public class EventService implements Interfaces.EventServiceInterface{
 
     }
 
+
     @Override
     public Event createEvent(String bezeichnung, String ort, LocalDateTime datum, int tickets) throws NegativeNumberException, InvalidDateException {
         if (tickets < 0) {
@@ -38,17 +37,17 @@ public class EventService implements Interfaces.EventServiceInterface{
             throw new InvalidDateException("ticket must be in future");
         }
 
-        Event currentEvent = null;
         try {
             int id = idserviceParallel.addId();
-            currentEvent = new Event(id, bezeichnung, ort, datum, tickets);
-            events.put(currentEvent.getId(), currentEvent);
-            System.out.println("Event successfully created, id: " + id);
-            return currentEvent;
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        return currentEvent;
+        String message = "EVENT,CREATE," + bezeichnung + "," + ort + "," + datum.toString() + "," + tickets;
+        System.out.println(message);
+        ClientServer clientServer = new ClientServer(message);
+        clientServer.sendMessage(message);
+
+        return null;
     }
 
     @Override
@@ -75,7 +74,7 @@ public class EventService implements Interfaces.EventServiceInterface{
     @Override
     public void deleteEvent(int id) throws IllegalArgumentException {
 
-       Event tempEvent = events.remove(id);
+        Event tempEvent = events.remove(id);
 
         if (tempEvent == null) throw new IllegalArgumentException("Event with id " + id + " not found");
 
@@ -93,11 +92,11 @@ public class EventService implements Interfaces.EventServiceInterface{
 
     @Override
     public List<Event> getAllEvents() {
-       List<Event> eventList = new ArrayList<>();
-       for (Map.Entry<Integer, Event> event : events.entrySet()){
-           eventList.add(event.getValue());
-       }
-       return eventList;
+        List<Event> eventList = new ArrayList<>();
+        for (Map.Entry<Integer, Event> event : events.entrySet()){
+            eventList.add(event.getValue());
+        }
+        return eventList;
     }
 
     @Override
